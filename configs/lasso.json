@@ -5,16 +5,23 @@
     "features": [
       "year",
       "odometer",
+      "lat",
+      "long",
       "manufacturer",
+      "model",
       "condition",
+      "cylinders",
       "fuel",
+      "title_status",
       "transmission",
       "drive",
+      "size",
       "type",
       "paint_color",
+      "region",
       "state"
     ],
-    "sample_n": null,
+    "sample_n": 200000,
     "min_price": 100,
     "max_price": 200000,
     "min_year": 1970,
@@ -22,8 +29,7 @@
     "max_odometer": 500000
   },
   "split": { "test_size": 0.2, "seed": 441 },
-  "preprocess": { "standardize_numeric": true },
+  "preprocess": { "standardize_numeric": true, "onehot_min_frequency": 50 },
   "train": { "log_target": true },
   "model": { "type": "lasso", "alpha": 0.0005, "max_iter": 5000 }
 }
-

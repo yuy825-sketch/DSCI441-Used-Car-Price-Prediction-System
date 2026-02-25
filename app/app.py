@@ -19,7 +19,7 @@ def _get_feature_schema(pipeline) -> tuple[list[str], list[str], dict[str, list[
     try:
         ohe = preprocess.named_transformers_["cat"].named_steps["onehot"]
         for feat, cats in zip(cat_features, ohe.categories_, strict=False):
-            categories[feat] = [str(c) for c in cats[:200]]
+            categories[feat] = [str(c) for c in cats]
     except Exception:
         pass
 
@@ -88,7 +88,7 @@ def main() -> None:
     with col_b:
         for feat in cat_features:
             opts = categories.get(feat, [])
-            if opts:
+            if opts and len(opts) <= 200:
                 features[feat] = st.selectbox(feat, options=opts, index=0)
             else:
                 features[feat] = st.text_input(feat, value="")

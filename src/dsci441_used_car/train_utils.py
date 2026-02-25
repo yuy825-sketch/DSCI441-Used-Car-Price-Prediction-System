@@ -40,9 +40,15 @@ class FitOutputs:
     y_pred: np.ndarray
 
 
-def split_features(features: list[str]) -> tuple[list[str], list[str]]:
-    numeric = [f for f in features if f in {"year", "odometer", "car_age"}]
-    categorical = [f for f in features if f not in set(numeric)]
+def infer_feature_types(df: pd.DataFrame, features: list[str]) -> tuple[list[str], list[str]]:
+    numeric: list[str] = []
+    categorical: list[str] = []
+    for f in features:
+        s = df[f]
+        if pd.api.types.is_numeric_dtype(s):
+            numeric.append(f)
+        else:
+            categorical.append(f)
     return numeric, categorical
 
 
@@ -51,16 +57,28 @@ def build_preprocess(
     numeric_features: list[str],
     categorical_features: list[str],
     standardize_numeric: bool,
+    onehot_min_frequency: int | None,
+    onehot_max_categories: int | None,
 ) -> ColumnTransformer:
     num_steps: list[tuple[str, Any]] = [("impute", SimpleImputer(strategy="median"))]
     if standardize_numeric:
         num_steps.append(("scale", StandardScaler()))
     num_pipe = Pipeline(num_steps)
 
+    use_infrequent = onehot_min_frequency is not None or onehot_max_categories is not None
+    handle_unknown = "infrequent_if_exist" if use_infrequent else "ignore"
     cat_pipe = Pipeline(
         [
             ("impute", SimpleImputer(strategy="most_frequent")),
-            ("onehot", OneHotEncoder(handle_unknown="ignore", sparse_output=False)),
+            (
+                "onehot",
+                OneHotEncoder(
+                    handle_unknown=handle_unknown,
+                    sparse_output=True,
+                    min_frequency=onehot_min_frequency,
+                    max_categories=onehot_max_categories,
+                ),
+            ),
         ]
     )
 
@@ -102,13 +120,24 @@ def fit_from_config(*, df: pd.DataFrame, cfg: dict[str, Any]) -> FitOutputs:
     features = list(dataset_cfg["features"])
     if "car_age" in df.columns and "car_age" not in features:
         features = [*features, "car_age"]
+    if "miles_per_year" in df.columns and "miles_per_year" not in features:
+        features = [*features, "miles_per_year"]
 
-    numeric_features, categorical_features = split_features(features)
-    standardize_numeric = bool(cfg.get("preprocess", {}).get("standardize_numeric", True))
+    numeric_features, categorical_features = infer_feature_types(df, features)
+    pre_cfg = cfg.get("preprocess", {}) or {}
+    standardize_numeric = bool(pre_cfg.get("standardize_numeric", True))
+    onehot_min_frequency = pre_cfg.get("onehot_min_frequency", None)
+    onehot_max_categories = pre_cfg.get("onehot_max_categories", None)
+    if onehot_min_frequency is not None:
+        onehot_min_frequency = int(onehot_min_frequency)
+    if onehot_max_categories is not None:
+        onehot_max_categories = int(onehot_max_categories)
     preprocess = build_preprocess(
         numeric_features=numeric_features,
         categorical_features=categorical_features,
         standardize_numeric=standardize_numeric,
+        onehot_min_frequency=onehot_min_frequency,
+        onehot_max_categories=onehot_max_categories,
     )
     model = build_model(cfg["model"])
     pipe = Pipeline([("preprocess", preprocess), ("model", model)])
@@ -228,4 +257,3 @@ def save_run(
     if extra_files:
         for name, obj in extra_files.items():
             (outdir / name).write_text(json.dumps(obj, indent=2) + "\n", encoding="utf-8")
-

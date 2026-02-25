@@ -5,13 +5,20 @@
     "features": [
       "year",
       "odometer",
+      "lat",
+      "long",
       "manufacturer",
+      "model",
       "condition",
+      "cylinders",
       "fuel",
+      "title_status",
       "transmission",
       "drive",
+      "size",
       "type",
       "paint_color",
+      "region",
       "state"
     ],
     "sample_n": null,
@@ -22,8 +29,7 @@
     "max_odometer": 500000
   },
   "split": { "test_size": 0.2, "seed": 441 },
-  "preprocess": { "standardize_numeric": true },
+  "preprocess": { "standardize_numeric": true, "onehot_min_frequency": 50 },
   "train": { "log_target": true },
   "model": { "type": "ols" }
 }
-

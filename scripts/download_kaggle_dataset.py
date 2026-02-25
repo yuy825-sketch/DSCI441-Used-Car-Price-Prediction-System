@@ -4,6 +4,7 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
+import time
 
 
 def _load_token_from_file() -> str | None:
@@ -39,6 +40,72 @@ def _ensure_kaggle_cli() -> None:
     )
 
 
+def _parse_total_bytes_from_content_range(hdr: str) -> int | None:
+    # Example: "bytes 0-1023/123456"
+    try:
+        if "/" not in hdr:
+            return None
+        total_str = hdr.split("/", 1)[1].strip()
+        if total_str.isdigit():
+            return int(total_str)
+        return None
+    except Exception:
+        return None
+
+
+def _download_url_to_zip(*, url: str, zip_path: Path) -> None:
+    import requests
+
+    zip_path.parent.mkdir(parents=True, exist_ok=True)
+    part_path = zip_path.with_suffix(zip_path.suffix + ".part")
+    existing = part_path.stat().st_size if part_path.exists() else 0
+
+    headers = {}
+    if existing > 0:
+        headers["Range"] = f"bytes={existing}-"
+
+    resp = requests.get(url, stream=True, headers=headers, timeout=(30, 60))
+    if resp.status_code == 206:
+        mode = "ab"
+        total = _parse_total_bytes_from_content_range(resp.headers.get("Content-Range", ""))  # type: ignore[arg-type]
+    elif resp.status_code == 200:
+        mode = "wb"
+        existing = 0
+        total = int(resp.headers.get("Content-Length", "0") or "0") or None
+    else:
+        resp.raise_for_status()
+        raise RuntimeError("Unreachable")
+
+    downloaded = existing
+    last_print = time.time()
+    t0 = last_print
+    with part_path.open(mode) as f:
+        for chunk in resp.iter_content(chunk_size=1024 * 1024):
+            if not chunk:
+                continue
+            f.write(chunk)
+            downloaded += len(chunk)
+            now = time.time()
+            if now - last_print >= 5.0:
+                rate = (downloaded - existing) / max(1e-6, now - t0)
+                if total:
+                    pct = 100.0 * downloaded / total
+                    print(f"Downloaded: {downloaded/1e6:.1f}MB / {total/1e6:.1f}MB ({pct:.1f}%) @ {rate/1e6:.2f}MB/s")
+                else:
+                    print(f"Downloaded: {downloaded/1e6:.1f}MB @ {rate/1e6:.2f}MB/s")
+                last_print = now
+
+    # If server provided a total, require completion before renaming.
+    if total is not None:
+        final_size = part_path.stat().st_size
+        if final_size != total:
+            raise RuntimeError(
+                f"Download incomplete (got {final_size} bytes, expected {total}). Re-run to resume: {part_path}"
+            )
+
+    part_path.replace(zip_path)
+
+
 def _download_with_kagglesdk(*, dataset: str, out_dir: Path) -> None:
     token = os.getenv("KAGGLE_API_TOKEN") or _load_token_from_file()
     if not token:
@@ -60,19 +127,23 @@ def _download_with_kagglesdk(*, dataset: str, out_dir: Path) -> None:
     resp = client.datasets.dataset_api_client.download_dataset(req)
 
     # `resp` is a `requests.Response` (see kagglesdk.common.types.http_redirect.HttpRedirect.prepare_from).
-    if hasattr(resp, "status_code") and int(resp.status_code) in {301, 302, 303, 307, 308} and resp.headers.get("Location"):
-        import requests
-
-        url = resp.headers["Location"]
-        resp = requests.get(url, stream=True, timeout=180)
-        resp.raise_for_status()
+    if not hasattr(resp, "status_code"):
+        raise RuntimeError("Unexpected Kaggle response type (expected requests.Response).")
 
     out_dir.mkdir(parents=True, exist_ok=True)
     zip_path = out_dir / "kaggle_dataset.zip"
-    with zip_path.open("wb") as f:
-        for chunk in resp.iter_content(chunk_size=1024 * 1024):
-            if chunk:
-                f.write(chunk)
+
+    status = int(resp.status_code)
+    if status in {301, 302, 303, 307, 308} and resp.headers.get("Location"):
+        url = resp.headers["Location"]
+        print("Following redirect to signed download URL...")
+        _download_url_to_zip(url=url, zip_path=zip_path)
+    else:
+        # Fallback: treat response body as the zip payload.
+        with zip_path.open("wb") as f:
+            for chunk in resp.iter_content(chunk_size=1024 * 1024):
+                if chunk:
+                    f.write(chunk)
 
     import zipfile
 

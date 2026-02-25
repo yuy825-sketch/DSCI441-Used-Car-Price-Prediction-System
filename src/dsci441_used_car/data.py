@@ -10,13 +10,20 @@ import pandas as pd
 DEFAULT_FEATURES: list[str] = [
     "year",
     "odometer",
+    "lat",
+    "long",
     "manufacturer",
+    "model",
     "condition",
+    "cylinders",
     "fuel",
+    "title_status",
     "transmission",
     "drive",
+    "size",
     "type",
     "paint_color",
+    "region",
     "state",
 ]
 
@@ -56,8 +63,21 @@ def clean_dataset(df: pd.DataFrame, *, target: str, features: list[str], spec: C
     if "year" in out.columns:
         out["year"] = pd.to_numeric(out["year"], errors="coerce").astype("Int64")
         out["car_age"] = (spec.max_year - out["year"]).astype("Int64")
-        if "car_age" not in features:
-            out = out.assign(car_age=out["car_age"])
+        out = out.assign(car_age=out["car_age"])
+
+    if "lat" in out.columns:
+        out["lat"] = pd.to_numeric(out["lat"], errors="coerce")
+        out = out[(out["lat"].isna()) | ((out["lat"] >= -90) & (out["lat"] <= 90))]
+
+    if "long" in out.columns:
+        out["long"] = pd.to_numeric(out["long"], errors="coerce")
+        out = out[(out["long"].isna()) | ((out["long"] >= -180) & (out["long"] <= 180))]
+
+    if "odometer" in out.columns and "car_age" in out.columns:
+        age = out["car_age"].astype("float64")
+        odo = out["odometer"].astype("float64")
+        denom = age.clip(lower=1.0)
+        out["miles_per_year"] = (odo / denom).replace([np.inf, -np.inf], np.nan)
 
     out = out[(out[target] >= spec.min_price) & (out[target] <= spec.max_price)]
 
@@ -74,4 +94,3 @@ def clean_dataset(df: pd.DataFrame, *, target: str, features: list[str], spec: C
 
     out = out.reset_index(drop=True)
     return out
-
