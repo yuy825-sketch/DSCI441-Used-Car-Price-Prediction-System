@@ -1,0 +1,29 @@
+{
+  "dataset": {
+    "path": "data/craigslist/vehicles.csv",
+    "target": "price",
+    "features": [
+      "year",
+      "odometer",
+      "manufacturer",
+      "condition",
+      "fuel",
+      "transmission",
+      "drive",
+      "type",
+      "paint_color",
+      "state"
+    ],
+    "sample_n": null,
+    "min_price": 100,
+    "max_price": 200000,
+    "min_year": 1970,
+    "max_year": 2026,
+    "max_odometer": 500000
+  },
+  "split": { "test_size": 0.2, "seed": 441 },
+  "preprocess": { "standardize_numeric": true },
+  "train": { "log_target": true },
+  "model": { "type": "ols" }
+}
+
