@@ -30,9 +30,10 @@ def make_pipeline_figure(out_png: Path) -> None:
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
 
-    w, h = 0.18, 0.42
+    # Keep all boxes within [0, 1] so the right-most panel is not clipped.
+    w, h = 0.175, 0.42
     y = 0.29
-    xs = [0.02, 0.23, 0.44, 0.65, 0.86]
+    xs = [0.02, 0.215, 0.41, 0.605, 0.8]
 
     _box(ax, (xs[0], y), w, h, "Craigslist\nvehicles.csv")
     _box(ax, (xs[1], y), w, h, "Cleaning\n+ filters\n+ derived feats")
@@ -54,7 +55,7 @@ def make_pipeline_figure(out_png: Path) -> None:
     )
 
     fig.tight_layout()
-    fig.savefig(out_png, dpi=200)
+    fig.savefig(out_png, dpi=200, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -69,4 +70,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
