@@ -93,3 +93,20 @@ Each experiment exports:
 - **What**: Permutation importance for the text-augmented Ridge model.
 - **Conclusion**: The `description` column contributes measurable predictive value beyond structured features.
 
+## Error analysis (distribution + price-dependent error)
+
+Each experiment exports:
+- `error_analysis_<tag>.md`
+- `error_abs_hist_<tag>.png`
+- `error_pct_hist_<tag>.png`
+- `error_abs_by_true_<tag>.png`
+- `error_by_true_bin_<tag>.png`
+
+### `error_*_hgb_ordinal.*`
+- **What**: Error distribution and “error vs price” plots for the best overall model.
+- **How generated**: `python scripts/error_analysis.py --run-dir runs/<hgb_run> --out-dir results --tag hgb_ordinal`
+- **Conclusion**: Absolute dollar error grows with vehicle price (heteroskedasticity), which helps explain why achieving a very low global RMSE is difficult on a heavy-tailed target.
+
+### `error_*_ridge_text_a20.*`
+- **What**: Same error analysis for the text-augmented Ridge model.
+- **Conclusion**: Text features help, but the model still struggles more on the high-price tail than the tree-based model.
