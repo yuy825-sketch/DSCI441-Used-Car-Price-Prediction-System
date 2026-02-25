@@ -1,274 +1,358 @@
 {
-  "row_count": 20,
+  "row_count": 31,
   "columns": {
     "categorical.len": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "int": 4
+        "int": 6
       }
     },
     "cmd": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "str": 4
+        "str": 7
       }
     },
     "coef.len": {
-      "missing": 16,
+      "missing": 26,
       "types": {
-        "int": 4
+        "int": 5
       }
     },
     "coef.max": {
-      "missing": 16,
+      "missing": 26,
       "types": {
-        "float": 4
+        "float": 5
       }
     },
     "coef.mean": {
-      "missing": 16,
+      "missing": 26,
       "types": {
-        "float": 4
+        "float": 5
       }
     },
     "coef.min": {
-      "missing": 16,
+      "missing": 26,
       "types": {
-        "float": 4
+        "float": 5
       }
     },
     "config.log_target": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "bool": 4
+        "bool": 6
       }
     },
     "config.model_type": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "str": 4
+        "str": 6
       }
     },
     "config.n_categorical": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "int": 4
+        "int": 6
       }
     },
     "config.n_features_input": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "int": 4
+        "int": 6
       }
     },
     "config.n_numeric": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "int": 4
+        "int": 6
       }
     },
     "config.n_rows": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "int": 4
+        "int": 6
       }
     },
     "config_path": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "str": 4
+        "str": 7
       }
     },
     "created_utc": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "str": 4
+        "str": 7
       }
     },
     "dataset.features.len": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "int": 4
+        "int": 7
       }
     },
     "dataset.max_odometer": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "int": 4
+        "int": 7
       }
     },
     "dataset.max_price": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "int": 4
+        "int": 7
       }
     },
     "dataset.max_year": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "int": 4
+        "int": 7
       }
     },
     "dataset.min_price": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "int": 4
+        "int": 7
       }
     },
     "dataset.min_year": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "int": 4
+        "int": 7
       }
     },
     "dataset.path": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "str": 4
+        "str": 7
       }
     },
     "dataset.sample_n": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "int": 4
+        "int": 7
       }
     },
     "dataset.target": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "str": 4
+        "str": 7
       }
     },
     "extra.n_rows_clean": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "int": 4
+        "int": 7
       }
     },
     "feature_names_out.len": {
-      "missing": 12,
+      "missing": 22,
       "types": {
-        "int": 8
+        "int": 9
       }
     },
     "git_head_sha": {
-      "missing": 17,
+      "missing": 25,
       "types": {
-        "str": 3
+        "str": 6
       }
     },
     "intercept": {
-      "missing": 16,
+      "missing": 26,
+      "types": {
+        "float": 5
+      }
+    },
+    "model.alpha": {
+      "missing": 27,
       "types": {
         "float": 4
       }
     },
-    "model.alpha": {
-      "missing": 18,
+    "model.l2_regularization": {
+      "missing": 30,
       "types": {
-        "float": 2
+        "float": 1
+      }
+    },
+    "model.learning_rate": {
+      "missing": 30,
+      "types": {
+        "float": 1
       }
     },
     "model.max_iter": {
-      "missing": 19,
+      "missing": 29,
+      "types": {
+        "int": 2
+      }
+    },
+    "model.max_leaf_nodes": {
+      "missing": 30,
+      "types": {
+        "int": 1
+      }
+    },
+    "model.min_samples_leaf": {
+      "missing": 30,
+      "types": {
+        "int": 1
+      }
+    },
+    "model.seed": {
+      "missing": 30,
       "types": {
         "int": 1
       }
     },
     "model.type": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "str": 4
+        "str": 7
       }
     },
     "name": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "str": 4
+        "str": 7
       }
     },
     "numeric.len": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "int": 4
+        "int": 6
+      }
+    },
+    "preprocess.categorical_encoder": {
+      "missing": 30,
+      "types": {
+        "str": 1
       }
     },
     "preprocess.onehot_min_frequency": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "int": 4
+        "int": 6
       }
     },
     "preprocess.standardize_numeric": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "bool": 4
+        "bool": 7
+      }
+    },
+    "preprocess.text.columns.len": {
+      "missing": 29,
+      "types": {
+        "int": 2
+      }
+    },
+    "preprocess.text.max_df": {
+      "missing": 29,
+      "types": {
+        "float": 2
+      }
+    },
+    "preprocess.text.max_features": {
+      "missing": 29,
+      "types": {
+        "int": 2
+      }
+    },
+    "preprocess.text.min_df": {
+      "missing": 29,
+      "types": {
+        "int": 2
+      }
+    },
+    "preprocess.text.ngram_range.len": {
+      "missing": 29,
+      "types": {
+        "int": 2
+      }
+    },
+    "preprocess.text.ngram_range.max": {
+      "missing": 29,
+      "types": {
+        "int": 2
+      }
+    },
+    "preprocess.text.ngram_range.mean": {
+      "missing": 29,
+      "types": {
+        "float": 2
+      }
+    },
+    "preprocess.text.ngram_range.min": {
+      "missing": 29,
+      "types": {
+        "int": 2
       }
     },
     "run_id": {
       "missing": 0,
       "types": {
-        "str": 20
+        "str": 31
       }
     },
     "source": {
       "missing": 0,
       "types": {
-        "str": 20
+        "str": 31
       }
     },
     "split.seed": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "int": 4
+        "int": 7
       }
     },
     "split.test_size": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "float": 4
+        "float": 7
       }
     },
     "test.mae": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "float": 4
+        "float": 6
       }
     },
     "test.r2": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "float": 4
+        "float": 6
       }
     },
     "test.rmse": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "float": 4
+        "float": 6
       }
     },
     "train.log_target": {
-      "missing": 16,
+      "missing": 24,
       "types": {
-        "bool": 4
+        "bool": 7
       }
     },
     "train.mae": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "float": 4
+        "float": 6
       }
     },
     "train.r2": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "float": 4
+        "float": 6
       }
     },
     "train.rmse": {
-      "missing": 16,
+      "missing": 25,
       "types": {
-        "float": 4
+        "float": 6
       }
     }
   }
