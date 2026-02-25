@@ -25,15 +25,15 @@ def _arrow(ax, start, end) -> None:
 def make_pipeline_figure(out_png: Path) -> None:
     out_png.parent.mkdir(parents=True, exist_ok=True)
 
-    fig, ax = plt.subplots(figsize=(10.8, 3.2))
+    fig, ax = plt.subplots(figsize=(11.2, 3.2))
     ax.set_axis_off()
-    ax.set_xlim(0, 1)
+    ax.set_xlim(0, 1.05)
     ax.set_ylim(0, 1)
 
     # Keep all boxes within [0, 1] so the right-most panel is not clipped.
-    w, h = 0.175, 0.42
+    w, h = 0.17, 0.42
     y = 0.29
-    xs = [0.02, 0.215, 0.41, 0.605, 0.8]
+    xs = [0.03, 0.235, 0.44, 0.645, 0.85]
 
     _box(ax, (xs[0], y), w, h, "Craigslist\nvehicles.csv")
     _box(ax, (xs[1], y), w, h, "Cleaning\n+ filters\n+ derived feats")
