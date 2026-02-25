@@ -32,6 +32,9 @@ Download helper (requires Kaggle API credentials):
 ```
 python scripts/download_kaggle_dataset.py
 ```
+Credentials options:
+- Preferred: `KAGGLE_API_TOKEN` (env) or `~/.kaggle/kaggle_api_token`
+- Legacy: `~/.kaggle/kaggle.json` or `KAGGLE_USERNAME`/`KAGGLE_KEY`
 
 ## Setup
 Create an environment (conda/venv) and install dependencies:
