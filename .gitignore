@@ -1,5 +1,7 @@
 # Data and generated artifacts (not committed)
-/data/
+/data/**
+!/data/
+!/data/README.md
 /datasets/
 /artifacts/
 /checkpoints/
