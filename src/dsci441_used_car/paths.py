@@ -22,9 +22,14 @@ class ProjectPaths:
 
 
 def get_repo_root() -> Path:
-    return Path(__file__).resolve().parents[3]
+    here = Path(__file__).resolve()
+    for p in here.parents:
+        # Repo root marker (lightweight + robust even when installed editable).
+        if (p / "pyproject.toml").exists() and (p / "src").exists():
+            return p
+    # Fallback to the typical src-layout structure.
+    return here.parents[2]
 
 
 def get_paths() -> ProjectPaths:
     return ProjectPaths(repo_root=get_repo_root())
-
