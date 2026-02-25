@@ -228,6 +228,14 @@ Error distribution visuals:
 
 These plots show that absolute error increases with price, which is typical for marketplace data: a $2,000 error is “big” for a $6,000 car but relatively small for a $60,000 car.
 
+To make this more explicit, the percentage-error histogram complements the absolute-error view:
+
+<img src="error_pct_hist_hgb_ordinal.png" width="620" />
+
+Finally, the “error by true-price bin” plot shows that both RMSE and MAE increase as we move into higher price bands (quantile bins on the test set):
+
+<img src="error_by_true_bin_hgb_ordinal.png" width="720" />
+
 ### 7.3 Mid-market operating domains (RMSE-focused)
 
 To understand the RMSE target in a more controlled setting, I evaluate filtered domains:
@@ -252,6 +260,14 @@ Interpretation:
 The text-augmented Ridge model also shows `description` contributes measurable predictive value:
 
 <img src="perm_importance_ridge_text_a20.png" width="740" />
+
+### 8.3 Mid-market importance stability
+
+When restricting to mid-market price ranges, the top signals remain broadly consistent (age/mileage plus a few strong categoricals), suggesting the model is not relying on a brittle single-feature shortcut:
+
+<img src="perm_importance_hgb_midmarket_60k.png" width="740" />
+
+<img src="perm_importance_hgb_midmarket_20k.png" width="740" />
 
 ## 9. Demo app (Streamlit)
 
