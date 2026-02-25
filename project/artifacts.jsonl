@@ -1,0 +1,3 @@
+{"time_utc": "2026-02-25 05:43:06 UTC", "kind": "runs_dir", "path": "runs", "produced_by": "experiment-runpack", "source": "", "notes": ""}
+{"time_utc": "2026-02-25 05:43:06 UTC", "kind": "runs_index", "path": "runs/index.jsonl", "produced_by": "experiment-runpack", "source": "", "notes": ""}
+{"time_utc": "2026-02-25 05:43:06 UTC", "kind": "experiment_matrix", "path": "project/experiment_matrix.md", "produced_by": "experiment-runpack", "source": "", "notes": ""}

@@ -2,6 +2,10 @@
 
 This repository contains an end-to-end **regression** project for predicting **used car prices** from listing attributes, with a small **Streamlit demo app**.
 
+Quick links:
+- Full report: [`results/REPORT.md`](results/REPORT.md)
+- Results index: [`results/README.md`](results/README.md)
+
 ## Project goals (from `info.md`)
 - Implement and compare multiple regression models (**OLS**, **Ridge**, **Lasso**)
 - Perform feature engineering and (limited) multicollinearity analysis
@@ -22,6 +26,11 @@ Expected local layout (not committed):
 ```
 data/craigslist/
   vehicles.csv
+```
+
+Download helper (requires Kaggle API credentials):
+```
+python scripts/download_kaggle_dataset.py
 ```
 
 ## Setup
@@ -45,6 +54,11 @@ Example (after placing the CSV under `data/craigslist/vehicles.csv`):
 python train.py --config configs/baseline_ols.json --run-name ols
 python train.py --config configs/ridge.json --run-name ridge
 python train.py --config configs/lasso.json --run-name lasso
+```
+
+One-command baseline run (EDA + 3 models + exports + results table):
+```
+python scripts/run_baselines.py
 ```
 
 ## Export results (figures + summary)

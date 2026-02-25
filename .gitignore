@@ -10,6 +10,7 @@
 /runs/**
 !/runs/
 !/runs/README.md
+!/runs/index.jsonl
 
 # Python
 __pycache__/
@@ -31,4 +32,3 @@ env/
 .DS_Store
 .idea/
 .vscode/
-
