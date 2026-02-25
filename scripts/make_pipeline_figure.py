@@ -25,15 +25,17 @@ def _arrow(ax, start, end) -> None:
 def make_pipeline_figure(out_png: Path) -> None:
     out_png.parent.mkdir(parents=True, exist_ok=True)
 
-    fig, ax = plt.subplots(figsize=(11.2, 3.2))
+    fig, ax = plt.subplots(figsize=(12.0, 3.4))
+    fig.patch.set_facecolor("white")
     ax.set_axis_off()
-    ax.set_xlim(0, 1.05)
+    # Use a slightly wider x-range + manual margins to avoid any clipping in
+    # different renderers (e.g., GitHub previews).
+    ax.set_xlim(0, 1.15)
     ax.set_ylim(0, 1)
 
-    # Keep all boxes within [0, 1] so the right-most panel is not clipped.
-    w, h = 0.17, 0.42
-    y = 0.29
-    xs = [0.03, 0.235, 0.44, 0.645, 0.85]
+    w, h = 0.18, 0.42
+    y = 0.28
+    xs = [0.04, 0.265, 0.49, 0.715, 0.94]
 
     _box(ax, (xs[0], y), w, h, "Craigslist\nvehicles.csv")
     _box(ax, (xs[1], y), w, h, "Cleaning\n+ filters\n+ derived feats")
@@ -54,8 +56,8 @@ def make_pipeline_figure(out_png: Path) -> None:
         fontweight="bold",
     )
 
-    fig.tight_layout()
-    fig.savefig(out_png, dpi=200, bbox_inches="tight")
+    fig.subplots_adjust(left=0.02, right=0.98, top=0.90, bottom=0.12)
+    fig.savefig(out_png, dpi=200, facecolor=fig.get_facecolor())
     plt.close(fig)
 
 
