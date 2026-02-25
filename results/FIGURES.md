@@ -2,6 +2,13 @@
 
 This file documents each visualization in `results/`, what it shows, and the conclusion it supports.
 
+## Project overview
+
+### `pipeline_overview.png`
+- **What**: A compact end-to-end pipeline diagram (data → cleaning → preprocessing → model → exports + demo).
+- **How generated**: `python scripts/make_pipeline_figure.py --out results/pipeline_overview.png`
+- **Conclusion**: Visual summary of the deliverables and how the repo components connect.
+
 ## Dataset visualizations (`results/dataset/`)
 
 ### `dataset/price_hist_logx.png`
