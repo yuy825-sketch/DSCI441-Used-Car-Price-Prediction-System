@@ -18,7 +18,7 @@ def _parse_summary(md: Path) -> dict:
     r2 = float(r2_m.group(1))
     rmse = float(rmse_m.group(1))
     mae = float(mae_m.group(1))
-    model = re.search(r"Model:\\s*`(.+?)`", text)
+    model = re.search(r"Model:\s*`(.+?)`", text)
     model_type = model.group(1) if model else ""
     tag = md.stem.replace("summary_", "")
     return {"tag": tag, "model_type": model_type, "r2": r2, "rmse": rmse, "mae": mae}
