@@ -30,42 +30,49 @@ cleanup() {
 }
 trap cleanup EXIT
 
-echo "Starting Streamlit on http://$ADDR:$PORT ..."
-"$STREAMLIT_BIN" -m streamlit run "$REPO_ROOT/app/app.py" \
-  --server.headless true \
-  --server.address "$ADDR" \
-  --server.port "$PORT" >/tmp/dsci441_streamlit.log 2>&1 &
-STREAMLIT_PID="$!"
-
-URL="http://$ADDR:$PORT"
-echo "Waiting for server..."
-for _i in $(seq 1 40); do
-  if command -v curl >/dev/null 2>&1; then
-    if curl -fsS "$URL" >/dev/null 2>&1; then
-      break
-    fi
-  else
-    if "$STREAMLIT_BIN" - <<'PY' >/dev/null 2>&1
-import urllib.request
-urllib.request.urlopen("http://127.0.0.1:8501", timeout=1).read(1)
-PY
-    then
-      break
-    fi
-  fi
-  sleep 1
-done
-
-sleep 2
 mkdir -p "$(dirname "$OUT_PNG")"
 
-# Snap Firefox can be restrictive; capture into $HOME (non-hidden) then copy.
-TMP_PNG="$HOME/dsci441_streamlit_demo.png"
-rm -f "$TMP_PNG"
+# Prefer the WebDriver path (waits for Streamlit to render; avoids blank screenshots).
+if command -v geckodriver >/dev/null 2>&1; then
+  echo "Capturing screenshot via geckodriver -> $OUT_PNG"
+  "$STREAMLIT_BIN" "$REPO_ROOT/scripts/capture_streamlit_screenshot_webdriver.py" \
+    --out "$OUT_PNG" \
+    --addr "$ADDR" \
+    --port "$PORT" \
+    --wait-ready "Enter vehicle details" \
+    --wait-timeout 120 \
+    --width 1400 \
+    --height 900
+else
+  echo "WARN: geckodriver not found; falling back to firefox --screenshot (may be blank)." >&2
+  echo "Starting Streamlit on http://$ADDR:$PORT ..."
+  "$STREAMLIT_BIN" -m streamlit run "$REPO_ROOT/app/app.py" \
+    --server.headless true \
+    --server.address "$ADDR" \
+    --server.port "$PORT" >/tmp/dsci441_streamlit.log 2>&1 &
+  STREAMLIT_PID="$!"
 
-echo "Capturing screenshot -> $TMP_PNG"
-firefox --headless --window-size 1400,900 --screenshot "$TMP_PNG" "$URL" >/dev/null 2>&1 || true
-cp -f "$TMP_PNG" "$OUT_PNG"
+  URL="http://$ADDR:$PORT"
+  echo "Waiting for server..."
+  for _i in $(seq 1 40); do
+    if command -v curl >/dev/null 2>&1; then
+      if curl -fsS "$URL" >/dev/null 2>&1; then
+        break
+      fi
+    fi
+    sleep 1
+  done
+
+  sleep 2
+
+  # Snap Firefox can be restrictive; capture into $HOME (non-hidden) then copy.
+  TMP_PNG="$HOME/dsci441_streamlit_demo.png"
+  rm -f "$TMP_PNG"
+
+  echo "Capturing screenshot -> $TMP_PNG"
+  firefox --headless --window-size 1400,900 --screenshot "$TMP_PNG" "$URL" >/dev/null 2>&1 || true
+  cp -f "$TMP_PNG" "$OUT_PNG"
+fi
 
 if [[ ! -s "$OUT_PNG" ]]; then
   echo "ERROR: screenshot failed. See /tmp/dsci441_streamlit.log" >&2
