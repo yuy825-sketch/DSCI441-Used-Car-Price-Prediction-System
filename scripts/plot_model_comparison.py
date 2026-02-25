@@ -10,9 +10,14 @@ import pandas as pd
 
 def _parse_summary(md: Path) -> dict:
     text = md.read_text(encoding="utf-8", errors="ignore")
-    r2 = float(re.search(r"R²:\\s*\\*\\*(.+?)\\*\\*", text).group(1))  # type: ignore[union-attr]
-    rmse = float(re.search(r"RMSE:\\s*\\*\\*(.+?)\\*\\*", text).group(1))  # type: ignore[union-attr]
-    mae = float(re.search(r"MAE:\\s*\\*\\*(.+?)\\*\\*", text).group(1))  # type: ignore[union-attr]
+    r2_m = re.search(r"(?:R²|R2):\s*\*\*(.+?)\*\*", text)
+    rmse_m = re.search(r"RMSE:\s*\*\*(.+?)\*\*", text)
+    mae_m = re.search(r"MAE:\s*\*\*(.+?)\*\*", text)
+    if not (r2_m and rmse_m and mae_m):
+        raise ValueError(f"Failed to parse metrics from {md}")
+    r2 = float(r2_m.group(1))
+    rmse = float(rmse_m.group(1))
+    mae = float(mae_m.group(1))
     model = re.search(r"Model:\\s*`(.+?)`", text)
     model_type = model.group(1) if model else ""
     tag = md.stem.replace("summary_", "")
@@ -69,4 +74,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
