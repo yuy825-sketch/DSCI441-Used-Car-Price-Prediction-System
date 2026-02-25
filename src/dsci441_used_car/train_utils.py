@@ -12,12 +12,15 @@ import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
+from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.linear_model import Lasso, LinearRegression, Ridge
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.preprocessing import FunctionTransformer
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 from sklearn.compose import TransformedTargetRegressor
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 def seed_everything(seed: int) -> None:
@@ -27,6 +30,11 @@ def seed_everything(seed: int) -> None:
 
 def _rmse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     return float(math.sqrt(mean_squared_error(y_true, y_pred)))
+
+
+def _flatten_1d(x):
+    # Must be a top-level function so the pipeline can be pickled/joblib-dumped.
+    return np.asarray(x).ravel()
 
 
 @dataclass(frozen=True)
@@ -56,37 +64,84 @@ def build_preprocess(
     *,
     numeric_features: list[str],
     categorical_features: list[str],
+    text_features: list[str],
     standardize_numeric: bool,
+    categorical_encoder: str,
     onehot_min_frequency: int | None,
     onehot_max_categories: int | None,
+    text_cfg: dict[str, Any] | None,
 ) -> ColumnTransformer:
     num_steps: list[tuple[str, Any]] = [("impute", SimpleImputer(strategy="median"))]
     if standardize_numeric:
         num_steps.append(("scale", StandardScaler()))
     num_pipe = Pipeline(num_steps)
 
-    use_infrequent = onehot_min_frequency is not None or onehot_max_categories is not None
-    handle_unknown = "infrequent_if_exist" if use_infrequent else "ignore"
-    cat_pipe = Pipeline(
-        [
-            ("impute", SimpleImputer(strategy="most_frequent")),
-            (
-                "onehot",
-                OneHotEncoder(
-                    handle_unknown=handle_unknown,
-                    sparse_output=True,
-                    min_frequency=onehot_min_frequency,
-                    max_categories=onehot_max_categories,
+    categorical_encoder = str(categorical_encoder).lower()
+    if categorical_encoder not in {"onehot", "ordinal"}:
+        raise ValueError(f"Unknown categorical_encoder: {categorical_encoder}")
+
+    if categorical_encoder == "onehot":
+        use_infrequent = onehot_min_frequency is not None or onehot_max_categories is not None
+        handle_unknown = "infrequent_if_exist" if use_infrequent else "ignore"
+        cat_pipe = Pipeline(
+            [
+                ("impute", SimpleImputer(strategy="most_frequent")),
+                (
+                    "onehot",
+                    OneHotEncoder(
+                        handle_unknown=handle_unknown,
+                        sparse_output=True,
+                        min_frequency=onehot_min_frequency,
+                        max_categories=onehot_max_categories,
+                    ),
                 ),
-            ),
-        ]
-    )
+            ]
+        )
+    else:
+        cat_pipe = Pipeline(
+            [
+                ("impute", SimpleImputer(strategy="most_frequent")),
+                ("ordinal", OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1)),
+            ]
+        )
+
+    transformers: list[tuple[str, Any, list[str]]] = [
+        ("num", num_pipe, numeric_features),
+        ("cat", cat_pipe, categorical_features),
+    ]
+
+    if text_features:
+        cfg = text_cfg or {}
+        max_features = int(cfg.get("max_features", 5000))
+        min_df = int(cfg.get("min_df", 3))
+        max_df = float(cfg.get("max_df", 0.98))
+        ngram_range = cfg.get("ngram_range", [1, 2])
+        if isinstance(ngram_range, list) and len(ngram_range) == 2:
+            ngram_range = (int(ngram_range[0]), int(ngram_range[1]))
+        else:
+            ngram_range = (1, 2)
+
+        text_pipe = Pipeline(
+            steps=[
+                ("impute", SimpleImputer(strategy="constant", fill_value="")),
+                ("flatten", FunctionTransformer(_flatten_1d, validate=False)),
+                (
+                    "tfidf",
+                    TfidfVectorizer(
+                        max_features=max_features,
+                        min_df=min_df,
+                        max_df=max_df,
+                        ngram_range=ngram_range,
+                        strip_accents="unicode",
+                        lowercase=True,
+                    ),
+                ),
+            ]
+        )
+        transformers.append(("text", text_pipe, text_features))
 
     return ColumnTransformer(
-        transformers=[
-            ("num", num_pipe, numeric_features),
-            ("cat", cat_pipe, categorical_features),
-        ],
+        transformers=transformers,
         remainder="drop",
         verbose_feature_names_out=False,
     )
@@ -100,6 +155,16 @@ def build_model(model_cfg: dict[str, Any]):
         return Ridge(alpha=float(model_cfg.get("alpha", 1.0)))
     if model_type == "lasso":
         return Lasso(alpha=float(model_cfg.get("alpha", 0.001)), max_iter=int(model_cfg.get("max_iter", 5000)))
+    if model_type in {"hgb", "histgb", "histgradientboosting"}:
+        return HistGradientBoostingRegressor(
+            max_iter=int(model_cfg.get("max_iter", 400)),
+            learning_rate=float(model_cfg.get("learning_rate", 0.06)),
+            max_depth=(None if model_cfg.get("max_depth", None) is None else int(model_cfg.get("max_depth"))),
+            max_leaf_nodes=int(model_cfg.get("max_leaf_nodes", 63)),
+            min_samples_leaf=int(model_cfg.get("min_samples_leaf", 20)),
+            l2_regularization=float(model_cfg.get("l2_regularization", 0.0)),
+            random_state=int(model_cfg.get("seed", 441)),
+        )
     raise ValueError(f"Unknown model type: {model_type}")
 
 
@@ -123,21 +188,36 @@ def fit_from_config(*, df: pd.DataFrame, cfg: dict[str, Any]) -> FitOutputs:
     if "miles_per_year" in df.columns and "miles_per_year" not in features:
         features = [*features, "miles_per_year"]
 
-    numeric_features, categorical_features = infer_feature_types(df, features)
     pre_cfg = cfg.get("preprocess", {}) or {}
     standardize_numeric = bool(pre_cfg.get("standardize_numeric", True))
+    categorical_encoder = str(pre_cfg.get("categorical_encoder", "onehot"))
     onehot_min_frequency = pre_cfg.get("onehot_min_frequency", None)
     onehot_max_categories = pre_cfg.get("onehot_max_categories", None)
     if onehot_min_frequency is not None:
         onehot_min_frequency = int(onehot_min_frequency)
     if onehot_max_categories is not None:
         onehot_max_categories = int(onehot_max_categories)
+
+    text_cfg = pre_cfg.get("text", None)
+    text_features: list[str] = []
+    if isinstance(text_cfg, dict):
+        cols = text_cfg.get("columns", None)
+        if isinstance(cols, str):
+            text_features = [cols]
+        elif isinstance(cols, list):
+            text_features = [str(c) for c in cols]
+
+    typed_features = [f for f in features if f not in set(text_features)]
+    numeric_features, categorical_features = infer_feature_types(df, typed_features)
     preprocess = build_preprocess(
         numeric_features=numeric_features,
         categorical_features=categorical_features,
+        text_features=text_features,
         standardize_numeric=standardize_numeric,
+        categorical_encoder=categorical_encoder,
         onehot_min_frequency=onehot_min_frequency,
         onehot_max_categories=onehot_max_categories,
+        text_cfg=text_cfg if isinstance(text_cfg, dict) else None,
     )
     model = build_model(cfg["model"])
     pipe = Pipeline([("preprocess", preprocess), ("model", model)])

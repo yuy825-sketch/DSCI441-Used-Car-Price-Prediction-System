@@ -9,11 +9,20 @@ import streamlit as st
 from dsci441_used_car.infer import load_run_model, predict_one
 
 
-def _get_feature_schema(pipeline) -> tuple[list[str], list[str], dict[str, list[str]]]:
+def _get_feature_schema(pipeline) -> tuple[list[str], list[str], list[str], dict[str, list[str]]]:
     inner = pipeline.regressor_ if hasattr(pipeline, "regressor_") else pipeline
     preprocess = inner.named_steps["preprocess"]
-    num_features = list(preprocess.transformers_[0][2])
-    cat_features = list(preprocess.transformers_[1][2])
+
+    cols_by_name: dict[str, list[str]] = {}
+    for name, _t, cols in preprocess.transformers_:
+        if name == "remainder":
+            continue
+        if isinstance(cols, list):
+            cols_by_name[name] = [str(c) for c in cols]
+
+    num_features = cols_by_name.get("num", [])
+    cat_features = cols_by_name.get("cat", [])
+    text_features = cols_by_name.get("text", [])
 
     categories: dict[str, list[str]] = {}
     try:
@@ -23,7 +32,7 @@ def _get_feature_schema(pipeline) -> tuple[list[str], list[str], dict[str, list[
     except Exception:
         pass
 
-    return num_features, cat_features, categories
+    return num_features, cat_features, text_features, categories
 
 
 @st.cache_resource
@@ -68,7 +77,7 @@ def main() -> None:
         st.error(f"Failed to load model from {run_dir}: {e}")
         return
 
-    num_features, cat_features, categories = _get_feature_schema(loaded.pipeline)
+    num_features, cat_features, text_features, categories = _get_feature_schema(loaded.pipeline)
 
     st.subheader("1) Enter vehicle details")
     col_a, col_b = st.columns([1, 1], gap="large")
@@ -82,6 +91,12 @@ def main() -> None:
                 features[feat] = st.number_input("Odometer (miles)", min_value=0, max_value=1000000, value=90000, step=1000)
             elif feat == "car_age":
                 features[feat] = st.number_input("Car age (years)", min_value=0, max_value=100, value=10, step=1)
+            elif feat == "lat":
+                features[feat] = st.number_input("Latitude", min_value=-90.0, max_value=90.0, value=40.6, step=0.1)
+            elif feat == "long":
+                features[feat] = st.number_input("Longitude", min_value=-180.0, max_value=180.0, value=-75.3, step=0.1)
+            elif feat == "miles_per_year":
+                features[feat] = st.number_input("Miles per year (optional)", min_value=0.0, max_value=200000.0, value=9000.0, step=500.0)
             else:
                 features[feat] = st.number_input(feat, value=0.0)
 
@@ -92,6 +107,8 @@ def main() -> None:
                 features[feat] = st.selectbox(feat, options=opts, index=0)
             else:
                 features[feat] = st.text_input(feat, value="")
+        for feat in text_features:
+            features[feat] = st.text_area(feat, value="", height=150)
 
     st.subheader("2) Predict")
     if st.button("Predict price"):

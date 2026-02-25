@@ -42,6 +42,8 @@ def main() -> int:
         ("ols", repo_root / "configs" / "baseline_ols.json"),
         ("ridge", repo_root / "configs" / "ridge.json"),
         ("lasso", repo_root / "configs" / "lasso.json"),
+        ("ridge_text_a20", repo_root / "configs" / "ridge_text_alpha20.json"),
+        ("hgb_ordinal", repo_root / "configs" / "hgb_ordinal.json"),
     ]
 
     runs_root = repo_root / "runs"
@@ -88,4 +90,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

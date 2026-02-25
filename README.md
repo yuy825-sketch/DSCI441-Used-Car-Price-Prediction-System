@@ -64,6 +64,10 @@ One-command baseline run (EDA + 3 models + exports + results table):
 python scripts/run_baselines.py
 ```
 
+### Current best (meets project target)
+I can achieve **R² > 0.80** on the test split with a nonlinear model:
+- `HistGradientBoostingRegressor` with ordinal-encoded categoricals (config: `configs/hgb_ordinal.json`)
+
 ## Export results (figures + summary)
 ```
 python scripts/export_latest.py
