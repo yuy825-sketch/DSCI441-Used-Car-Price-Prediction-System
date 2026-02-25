@@ -117,3 +117,10 @@ Each experiment exports:
 ### `error_*_ridge_text_a20.*`
 - **What**: Same error analysis for the text-augmented Ridge model.
 - **Conclusion**: Text features help, but the model still struggles more on the high-price tail than the tree-based model.
+
+## Demo app
+
+### `streamlit_demo.png`
+- **What**: Screenshot of the Streamlit demo page (run-dir loaded, ready for input/prediction).
+- **How generated**: `bash scripts/capture_streamlit_screenshot.sh results/streamlit_demo.png`
+- **Conclusion**: Demonstrates a working interactive “enter features → predict price” workflow for the course deliverable.
