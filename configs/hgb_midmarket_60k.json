@@ -1,0 +1,44 @@
+{
+  "dataset": {
+    "path": "data/craigslist/vehicles.csv",
+    "target": "price",
+    "features": [
+      "year",
+      "odometer",
+      "lat",
+      "long",
+      "manufacturer",
+      "model",
+      "condition",
+      "cylinders",
+      "fuel",
+      "title_status",
+      "transmission",
+      "drive",
+      "size",
+      "type",
+      "paint_color",
+      "region",
+      "state"
+    ],
+    "sample_n": 250000,
+    "min_price": 100,
+    "max_price": 60000,
+    "min_year": 1990,
+    "max_year": 2026,
+    "max_odometer": 300000
+  },
+  "split": { "test_size": 0.2, "seed": 441 },
+  "preprocess": { "standardize_numeric": false, "categorical_encoder": "ordinal" },
+  "train": { "log_target": true },
+  "model": {
+    "type": "hgb",
+    "max_iter": 600,
+    "learning_rate": 0.06,
+    "max_leaf_nodes": 127,
+    "min_samples_leaf": 30,
+    "l2_regularization": 0.0,
+    "seed": 441
+  }
+}
+
