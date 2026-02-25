@@ -18,25 +18,25 @@ Quick links:
 
 Pipeline overview:
 
-![Pipeline overview](results/pipeline_overview.png)
+<img src="results/pipeline_overview.png" width="760" />
 
 Dataset highlights (heavy-tailed price + missingness):
 
-![Price distribution](results/dataset/price_hist_logx.png)
+<img src="results/dataset/price_hist_logx.png" width="620" />
 
-![Missingness](results/dataset/missingness_top20.png)
+<img src="results/dataset/missingness_top20.png" width="720" />
 
 Model comparison (test metrics):
 
-![Model comparison (R²)](results/model_comparison_r2.png)
+<img src="results/model_comparison_r2.png" width="760" />
 
-![Model comparison (RMSE)](results/model_comparison_rmse.png)
+<img src="results/model_comparison_rmse.png" width="760" />
 
 Best overall model diagnostics (`hgb_ordinal`):
 
-![True vs predicted (hgb_ordinal)](results/true_vs_pred_hgb_ordinal.png)
+<img src="results/true_vs_pred_hgb_ordinal.png" width="640" />
 
-![Permutation importance (hgb_ordinal)](results/perm_importance_hgb_ordinal.png)
+<img src="results/perm_importance_hgb_ordinal.png" width="740" />
 
 ## Disclaimer
 This is a course project for educational purposes only. It is **not** financial advice.
