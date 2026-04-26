@@ -10,16 +10,16 @@
     :root {
       --page-w: 250mm;
       --page-h: 430mm;
-      --bg: #f5f3eb;
-      --ink: #172323;
-      --muted: #4d6161;
-      --panel: #fffcf4;
-      --line: #cec7b8;
-      --green: #1c6c5e;
-      --green-soft: #e9f4f1;
-      --amber: #ab5b31;
-      --amber-soft: #faeee4;
-      --olive-soft: #edf2e3;
+      --bg: #edf1f7;
+      --ink: #1d2430;
+      --muted: #556475;
+      --panel: #fcfdff;
+      --line: #c4cfdd;
+      --green: #2f5d88;
+      --green-soft: #e9f1fb;
+      --amber: #9d543c;
+      --amber-soft: #f7ece6;
+      --olive-soft: #eef3f7;
     }
 
     @page {
@@ -53,9 +53,9 @@
       margin: 0 auto;
       padding: 3mm;
       background:
-        radial-gradient(circle at 12% -8%, #f0ddcb 0, transparent 26%),
-        radial-gradient(circle at 100% 0, #d9ece8 0, transparent 25%),
-        radial-gradient(circle at 95% 100%, #e2ebcf 0, transparent 26%),
+        radial-gradient(circle at 10% -6%, #d7e3f3 0, transparent 27%),
+        radial-gradient(circle at 100% 0, #efddd4 0, transparent 24%),
+        radial-gradient(circle at 94% 100%, #dee8f4 0, transparent 27%),
         var(--bg);
     }
 
@@ -72,7 +72,7 @@
     .hero {
       padding: 3.4mm 4mm 3mm;
       border-bottom: 0.3mm solid var(--line);
-      background: linear-gradient(140deg, #fff8ea 0%, #f0f7f3 58%, #fff3e8 100%);
+      background: linear-gradient(140deg, #f9fbff 0%, #eef3fb 56%, #f7ece6 100%);
     }
 
     .eyebrow {
@@ -360,7 +360,7 @@
       margin: 0 2.2mm 2.2mm;
       border: 0.25mm solid var(--line);
       border-radius: 2mm;
-      background: linear-gradient(180deg, #eff6e9 0%, #e9f1df 100%);
+      background: linear-gradient(180deg, #eaf1fa 0%, #e3ecf8 100%);
       padding: 1.5mm 1.8mm;
     }
 
@@ -368,13 +368,13 @@
       margin: 0;
       font-size: 3.75mm;
       font-family: "Source Serif 4", Georgia, serif;
-      color: #3f5a39;
+      color: #36577e;
     }
 
     .footer p {
       margin: 0.7mm 0 0;
       font-size: 2.2mm;
-      color: #4a5e44;
+      color: #54677e;
       line-height: 1.24;
     }
 
@@ -519,6 +519,15 @@
             </div>
           </section>
 
+          <section class="panel soft-green">
+            <p class="kicker">Bottom Note</p>
+            <h2>What this poster prioritizes</h2>
+            <p>
+              The focus is the full project arc: realistic data cleaning, model comparison, nonlinear gains, and the extra
+              diagnostic layer needed to interpret pricing error instead of only reporting one leaderboard score.
+            </p>
+          </section>
+
         </div>
 
         <div class="col">
@@ -642,6 +651,20 @@
                 <p>The added materials improve communication and diagnosis, but they do not pretend the model is a finished commercial pricing engine.</p>
               </div>
             </div>
+          </section>
+
+          <section class="panel soft-amber">
+            <p class="kicker">Bottom Note</p>
+            <h2>Why the final package is stronger</h2>
+            <p>
+              Compared with a plain model-comparison poster, this version communicates not only which model wins, but also
+              where that win weakens and how a user should interpret predictions under segment-dependent risk.
+            </p>
+            <ul class="tight-bullets">
+              <li>Global metrics summarize broad-domain quality.</li>
+              <li>Decile and subgroup views identify where caution increases.</li>
+              <li>Report, poster, site, and demo now reinforce the same reading.</li>
+            </ul>
           </section>
         </div>
       </section>
