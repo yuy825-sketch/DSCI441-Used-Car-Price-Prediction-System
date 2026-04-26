@@ -1,26 +1,26 @@
 I want to start with why this project was worth doing. The goal was to choose a problem that feels practical, but is also statistically difficult. Used-car pricing is a good example because the data is noisy, the market is diverse, and simple rules break very quickly.
 
-我先从为什么选择这个项目开始讲。我想做一个既有现实意义、又有统计挑战的问题。二手车定价就是一个很好的例子，因为它的数据噪声很大，市场差异很强，而且简单规则很快就会失效。
+我先从为什么选择这个项目开始讲。这个题目既有现实意义，也有明显的统计挑战。二手车定价就是一个很好的例子，因为它的数据噪声很大，市场差异很强，而且简单规则很快就会失效。
 
 When I look at a used-car listing, I do not only see one target number. I see age, mileage, condition, brand, vehicle type, and many missing fields. I also know that a seller's asking price is not a perfect ground truth, so even the label itself contains noise.
 
-当我看一条二手车挂牌时，我看到的不是一个简单的目标数字。我还会看到车龄、里程、车况、品牌、车型，以及大量缺失字段。我也知道卖家的挂牌价本身并不是完美真值，所以标签本身就带有噪声。
+当我看一条二手车挂牌时，看到的并不是一个简单的目标数字。还会看到车龄、里程、车况、品牌、车型，以及大量缺失字段。卖家的挂牌价本身也不是完美真值，所以标签本身就带有噪声。
 
 That is why I treated this project as more than a model-fitting exercise. The goal was to build a full workflow with data cleaning, feature engineering, baseline comparison, stronger nonlinear modeling, error diagnostics, and a demo that people can actually inspect.
 
-所以我把这个项目看得不只是一个“训练模型”的练习。我想做的是一整套流程。我希望它包括数据清理、特征工程、基线比较、更强的非线性模型、误差诊断，以及一个别人真的可以去看的 Demo。
+所以我把这个项目看得不只是一个“训练模型”的练习。更想做的是一整套流程，包括数据清理、特征工程、基线比较、更强的非线性模型、误差诊断，以及一个别人真的可以去看的 Demo。
 
 In the poster, the first idea I emphasize is that the dataset itself creates the challenge. The Craigslist dataset is large, but large does not mean clean. Prices are strongly right-skewed, mileage is noisy, and many useful categorical features are incomplete.
 
-在这张海报里，我首先强调的是：困难首先来自数据本身。Craigslist 数据集虽然很大，但大并不代表干净。价格有明显长尾，里程信息噪声很大，而且很多有用的类别特征都不完整。
+在这张海报里，首先强调的是：困难首先来自数据本身。Craigslist 数据集虽然很大，但大并不代表干净。价格有明显长尾，里程信息噪声很大，而且很多有用的类别特征都不完整。
 
 Because of that, I put real effort into feature preparation. Impossible values were filtered, missing entries were normalized, and features such as car age and miles per year were created. These features are simple, but they are closer to how people actually reason about vehicle value.
 
-正因为如此，我在特征准备上花了不少精力。我过滤掉了明显不合理的值，统一了缺失和未知值的处理方式，还构造了车龄和每年行驶里程这样的特征。这些特征并不复杂，但它们更接近人们真实判断车辆价值的方式。
+正因为如此，我在特征准备上花了不少精力。先过滤掉明显不合理的值，再统一缺失和未知值的处理方式，同时构造了车龄和每年行驶里程这样的特征。这些特征并不复杂，但它们更接近人们真实判断车辆价值的方式。
 
 Several model families were compared instead of jumping directly to the strongest one. I used OLS, Ridge, and Lasso as linear baselines. Then Ridge with TF-IDF text features was added, and finally HistGradientBoosting as the strongest nonlinear model.
 
-然后我没有直接跳到最强模型，而是比较了多种模型家族。我先用了 OLS、Ridge 和 Lasso 作为线性基线，再加入了带 TF-IDF 文本特征的 Ridge，最后使用 HistGradientBoosting 作为更强的非线性模型。
+然后我没有直接跳到最强模型，而是比较了多种模型家族。先用 OLS、Ridge 和 Lasso 作为线性基线，再加入带 TF-IDF 文本特征的 Ridge，最后使用 HistGradientBoosting 作为更强的非线性模型。
 
 The most important broad result is very clear. Nonlinear modeling matters. The best broad-domain model reaches about 0.806 in R-squared, which is much better than the plain linear baselines, and still clearly better than the text-augmented Ridge model.
 
@@ -28,7 +28,7 @@ The most important broad result is very clear. Nonlinear modeling matters. The b
 
 But the poster is not only here to say which model wins. The more important message is that a strong overall score does not mean the model behaves uniformly. That is why the upgraded diagnostics became a central part of the final package.
 
-但这张海报并不只是为了说明哪个模型赢了。更重要的信息是：一个整体上很强的分数，并不意味着模型在所有场景下都表现一致。这也是为什么我后来又加了升级版诊断分析，并把它放到最终交付的核心位置。
+但这张海报并不只是为了说明哪个模型赢了。更重要的信息是：一个整体上很强的分数，并不意味着模型在所有场景下都表现一致。这也是为什么后来又加入了更完整的诊断分析，并把它放到最终交付的核心位置。
 
 The decile-based analysis shows the main pattern very clearly. Error is much smaller in lower and middle price ranges, but it grows rapidly in the expensive tail. In other words, the model is useful across the market, but its dollar-level certainty is not constant.
 
@@ -40,12 +40,12 @@ I also looked at subgroup behavior. Condition, fuel type, and vehicle age all in
 
 This changes the conclusion of the project in an important way. The final claim is not just that I found a better regressor. The stronger claim is that I can describe when the model is reliable, when it becomes more fragile, and how that should affect deployment reading.
 
-这会实质性地改变项目结论。我的最终主张不只是“我找到了一个更好的回归器”。更强的主张是：我能进一步说明模型什么时候更可靠，什么时候更脆弱，以及这种差异应该如何影响部署和解释。
+这会实质性地改变项目结论。最终主张不只是“找到了一个更好的回归器”。更强的主张是：我能进一步说明模型什么时候更可靠，什么时候更脆弱，以及这种差异应该如何影响部署和解释。
 
 That is why the poster also includes the demo and packaging story. I kept the local Streamlit demo as the runnable version, and the GitHub Pages version works as a static but easy-to-share companion. Together, they make the project easier to review and easier to communicate.
 
-这也是为什么海报里还保留了 Demo 和整体包装的部分。我保留了本地 Streamlit 作为可运行版本，同时增加了 GitHub Pages 版本作为静态但更容易分享的补充。这样一来，整个项目更容易被审阅，也更容易被讲清楚。
+这也是为什么海报里还保留了 Demo 和整体包装的部分。我保留了本地 Streamlit 作为可运行版本，同时加入 GitHub Pages 版本作为静态但更容易分享的补充。这样一来，整个项目更容易被审阅，也更容易被讲清楚。
 
 So if I use one sentence to summarize this poster, I would say this: I built a used-car pricing system that performs well overall, but more importantly, I showed how to read its errors honestly. That is the part that makes the final version stronger than a standard course-modeling project.
 
-如果要我用一句话总结这张海报，我会这样说：我做出了一个整体表现不错的二手车定价系统，但更重要的是，我进一步说明了应该怎样诚实地理解它的误差。我认为这正是最终版本比普通课程建模项目更强的地方。
+如果要我用一句话总结这张海报，我会这样说：我做出了一个整体表现不错的二手车定价系统，但更重要的是，也进一步说明了应该怎样诚实地理解它的误差。我认为这正是最终版本比普通课程建模项目更强的地方。
