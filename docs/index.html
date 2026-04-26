@@ -98,6 +98,40 @@
           <figcaption>RMSE trade-offs vary with price-domain coverage.</figcaption>
         </figure>
       </div>
+      <div class="score-grid">
+        <article class="score-card">
+          <h3>Compact leaderboard</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>R²</th>
+                  <th>RMSE</th>
+                  <th>Reading</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>HistGradientBoosting</strong></td><td>0.8061</td><td>6649</td><td>Best broad-domain fit</td></tr>
+                <tr><td>Ridge + TF-IDF</td><td>0.7275</td><td>7866</td><td>Useful text baseline</td></tr>
+                <tr><td>Ridge</td><td>0.5835</td><td>9666</td><td>Interpretable linear floor</td></tr>
+                <tr><td>Lasso</td><td>0.5540</td><td>10003</td><td>Sparser but weaker fit</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+        <article class="note-box">
+          <h3>Why the upgrade matters</h3>
+          <p>
+            The original repository already identified a strong nonlinear regressor. This upgraded site adds the missing
+            second layer: where the model is reliable, where error scales up, and how the same predictor should be read
+            differently across price ranges and subgroups.
+          </p>
+          <p>
+            That makes the project look more like a deployable analytics system and less like a single leaderboard snapshot.
+          </p>
+        </article>
+      </div>
     </section>
 
     <section class="block" id="demo">
@@ -107,6 +141,28 @@
         GitHub Pages cannot run live model inference directly, so this section provides precomputed example scenarios that
         mimic the Streamlit workflow: choose a case, load, inspect estimate and uncertainty note.
       </p>
+      <div class="step-strip">
+        <article class="step">
+          <span class="idx">1</span>
+          <h3>Pick a listing type</h3>
+          <p>Choose a commuter car, a diesel utility pickup, or an older low-price listing.</p>
+        </article>
+        <article class="step">
+          <span class="idx">2</span>
+          <h3>Load the precomputed result</h3>
+          <p>The site simulates a short inference delay, then reveals the fixed model output.</p>
+        </article>
+        <article class="step">
+          <span class="idx">3</span>
+          <h3>Read price plus range</h3>
+          <p>Use both the point estimate and the uncertainty band instead of reading a single dollar value.</p>
+        </article>
+        <article class="step">
+          <span class="idx">4</span>
+          <h3>Check segment risk</h3>
+          <p>Use the diagnostics page to decide whether that scenario sits in a harder subgroup or price band.</p>
+        </article>
+      </div>
       <div class="btn-row">
         <button class="btn" data-case-btn="commuter">Mid-market commuter</button>
         <button class="btn" data-case-btn="pickup">Diesel utility pickup</button>
@@ -143,6 +199,29 @@
         The extension adds diagnostics beyond aggregate metrics: subgroup MAE, decile error profiles, calibration-style views,
         and age-bucket behavior. These plots are available in detail on the <a href="results.html">Results page</a>.
       </p>
+      <div class="insight-grid">
+        <article class="insight-card">
+          <h3>Decile drift is explicit</h3>
+          <p>
+            Error is not uniform across the market. High-price listings show much larger absolute-dollar miss even when the
+            overall fit remains strong.
+          </p>
+        </article>
+        <article class="insight-card">
+          <h3>Subgroups are uneven</h3>
+          <p>
+            Condition, fuel type, and vehicle age each shift error behavior. The upgrade makes those segment effects visible
+            instead of hiding them inside one MAE.
+          </p>
+        </article>
+        <article class="insight-card">
+          <h3>Deployment reading changes</h3>
+          <p>
+            The practical recommendation is to show prediction + segment context together. That is the main value added by
+            this upgraded companion site.
+          </p>
+        </article>
+      </div>
       <div class="btn-row">
         <a class="btn" href="results.html">Open full results deep dive</a>
         <a class="btn" href="../results/REPORT.md">Open REPORT.md</a>

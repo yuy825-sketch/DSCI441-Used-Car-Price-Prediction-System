@@ -267,6 +267,42 @@
       color: var(--ink);
     }
 
+    .tight-bullets {
+      margin: 1mm 0 0;
+      padding-left: 3.4mm;
+      font-size: 2.35mm;
+      color: var(--muted);
+      display: grid;
+      gap: 0.55mm;
+    }
+
+    .rule-grid {
+      margin-top: 1.1mm;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1mm;
+    }
+
+    .rule {
+      border: 0.22mm solid var(--line);
+      border-radius: 1.5mm;
+      background: #fff;
+      padding: 1mm;
+    }
+
+    .rule h3 {
+      margin: 0;
+      font-size: 2.4mm;
+      line-height: 1.15;
+      font-family: "Source Serif 4", Georgia, serif;
+    }
+
+    .rule p {
+      margin: 0.7mm 0 0;
+      font-size: 2.15mm;
+      line-height: 1.28;
+    }
+
     .footer {
       margin: 0 2.8mm 2.8mm;
       border: 0.25mm solid var(--line);
@@ -409,6 +445,42 @@
               <img src="assets/perm_importance_hgb_ordinal.png" alt="Permutation importance" />
               <figcaption>Age/mileage and key segment attributes dominate signal contribution.</figcaption>
             </figure>
+            <div class="mini-grid">
+              <div class="mini">
+                <p><strong>Why nonlinear wins:</strong> it captures segment interactions that linear baselines only approximate.</p>
+              </div>
+              <div class="mini">
+                <p><strong>Why baselines stay:</strong> OLS/Ridge/Lasso still anchor interpretation and set a reproducible floor.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <p class="kicker">Deployment Reading</p>
+            <h2>How the upgraded diagnostics should be used</h2>
+            <p>
+              The main contribution of the extension is not a new winning model; it is a better interpretation protocol for
+              using the same predictor responsibly in a user-facing setting.
+            </p>
+            <ul class="tight-bullets">
+              <li>Show the point estimate together with a segment-aware uncertainty note.</li>
+              <li>Treat premium listings as higher absolute-dollar risk cases even with good global R².</li>
+              <li>Use subgroup plots to flag where future segment-specific models may be worth the cost.</li>
+            </ul>
+            <div class="rule-grid">
+              <div class="rule">
+                <h3>For demos</h3>
+                <p>Report estimate, range, and listing attributes together.</p>
+              </div>
+              <div class="rule">
+                <h3>For grading</h3>
+                <p>Keep aggregate metrics, but add decile and subgroup behavior.</p>
+              </div>
+              <div class="rule">
+                <h3>For future work</h3>
+                <p>Explore intervals, segment models, and richer text signals.</p>
+              </div>
+            </div>
           </section>
         </div>
 
@@ -461,6 +533,10 @@
                 <p><strong>Future direction:</strong> segment-specific models and interval predictions for risk-aware pricing.</p>
               </div>
             </div>
+            <ul class="tight-bullets">
+              <li>The GitHub Pages companion turns the same message into a static, deployable walkthrough.</li>
+              <li>The poster, report, and website now tell the same core story across formats.</li>
+            </ul>
           </section>
         </div>
       </section>

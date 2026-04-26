@@ -97,6 +97,55 @@
     </section>
 
     <section class="block">
+      <p class="kicker">Reading Guide</p>
+      <h2>How each diagnostic changes deployment decisions</h2>
+      <div class="insight-grid">
+        <article class="insight-card">
+          <h3>Condition MAE</h3>
+          <p>
+            If condition buckets spread widely, a prediction UI should surface that some cosmetic/mechanical states are
+            much harder to price than others.
+          </p>
+        </article>
+        <article class="insight-card">
+          <h3>Fuel MAE</h3>
+          <p>
+            Fuel segments behave like different micro-markets. Diesel and niche fuel categories should not inherit the same
+            confidence message as common gasoline listings.
+          </p>
+        </article>
+        <article class="insight-card">
+          <h3>Price-decile residuals</h3>
+          <p>
+            Rising MAE with true price means the system should communicate absolute-dollar risk explicitly for premium
+            listings instead of relying on the same wording everywhere.
+          </p>
+        </article>
+        <article class="insight-card">
+          <h3>Decile calibration view</h3>
+          <p>
+            Predicted-mean versus true-mean comparisons reveal whether the model tends to compress expensive or cheap
+            regions toward the center of the market.
+          </p>
+        </article>
+        <article class="insight-card">
+          <h3>Condition x fuel heatmap</h3>
+          <p>
+            Interaction plots identify combinations that deserve extra caution, targeted retraining, or segment-specific
+            messaging in a production version.
+          </p>
+        </article>
+        <article class="insight-card">
+          <h3>Age-bucket error</h3>
+          <p>
+            MAE and MAPE can disagree across age groups. This matters because user-facing confidence should depend on
+            whether the application cares about absolute-dollar or percentage error.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block">
       <p class="kicker">Interpretation</p>
       <h2>Deployment-facing conclusions</h2>
       <div class="grid-2">
@@ -124,7 +173,7 @@
 
     <footer class="site-footer">
       Static GitHub Pages artifact for DSCI441. For full reproducible details, see
-      <a href="../results/REPORT.md">`results/REPORT.md`</a> and <a href="../results/advanced/README.md">`results/advanced/README.md`</a>.
+      <a href="../results/REPORT.md">results/REPORT.md</a> and <a href="../results/advanced/README.md">results/advanced/README.md</a>.
     </footer>
   </div>
 </body>
