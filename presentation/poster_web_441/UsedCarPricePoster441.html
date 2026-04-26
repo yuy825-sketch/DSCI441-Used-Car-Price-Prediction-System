@@ -251,6 +251,12 @@
       line-height: 1.22;
     }
 
+    .fig.flow {
+      margin-left: -0.45mm;
+      margin-right: -0.45mm;
+      padding: 0.55mm;
+    }
+
     .fig-row {
       margin-top: 0.95mm;
       display: grid;
@@ -430,9 +436,9 @@
             <p class="note">Test split (80/20, seed 441)</p>
           </div>
           <div class="metric">
-            <p class="label">Extension diagnostics</p>
-            <p class="value">6 figures</p>
-            <p class="note">Subgroup + decile diagnostics</p>
+            <p class="label">Top-decile MAE</p>
+            <p class="value">$10.1k</p>
+            <p class="note">High-price listings show the largest absolute-dollar miss</p>
           </div>
         </div>
       </header>
@@ -451,7 +457,7 @@
               <li>Many categorical fields are sparse/missing.</li>
               <li>Error scale increases with true price (heteroskedasticity).</li>
             </ul>
-            <figure class="fig">
+            <figure class="fig flow">
               <img src="assets/pipeline_overview.png" alt="Pipeline overview" />
               <figcaption>Consistent workflow from cleaning to model export and interactive demo.</figcaption>
             </figure>
@@ -513,33 +519,6 @@
             </div>
           </section>
 
-          <section class="panel">
-            <p class="kicker">Deployment Reading</p>
-            <h2>How the upgraded diagnostics should be used</h2>
-            <p>
-              The main contribution of the extension is not a new winning model; it is a better interpretation protocol for
-              using the same predictor responsibly in a user-facing setting.
-            </p>
-            <ul class="tight-bullets">
-              <li>Show the point estimate together with a segment-aware uncertainty note.</li>
-              <li>Treat premium listings as higher absolute-dollar risk cases even with good global R².</li>
-              <li>Use subgroup plots to flag where future segment-specific models may be worth the cost.</li>
-            </ul>
-            <div class="rule-grid">
-              <div class="rule">
-                <h3>For demos</h3>
-                <p>Report estimate, range, and listing attributes together.</p>
-              </div>
-              <div class="rule">
-                <h3>For grading</h3>
-                <p>Keep aggregate metrics, but add decile and subgroup behavior.</p>
-              </div>
-              <div class="rule">
-                <h3>For future work</h3>
-                <p>Explore intervals, segment models, and richer text signals.</p>
-              </div>
-            </div>
-          </section>
         </div>
 
         <div class="col">
@@ -617,7 +596,29 @@
               <li>The GitHub Pages companion turns the same message into a static, deployable walkthrough.</li>
               <li>The poster, report, and website now tell the same core story across formats.</li>
             </ul>
+            <h2>How the upgraded diagnostics should be used</h2>
+            <p>
+              The main contribution of the extension is not a new winning model; it is a better interpretation protocol for
+              using the same predictor responsibly in a user-facing setting.
+            </p>
+            <ul class="tight-bullets">
+              <li>Show the point estimate together with a segment-aware uncertainty note.</li>
+              <li>Treat premium listings as higher absolute-dollar risk cases even with good global R².</li>
+              <li>Use subgroup plots to flag where future segment-specific models may be worth the cost.</li>
+            </ul>
             <div class="rule-grid">
+              <div class="rule">
+                <h3>For demos</h3>
+                <p>Report estimate, range, and listing attributes together.</p>
+              </div>
+              <div class="rule">
+                <h3>For grading</h3>
+                <p>Keep aggregate metrics, but add decile and subgroup behavior.</p>
+              </div>
+              <div class="rule">
+                <h3>For future work</h3>
+                <p>Explore intervals, segment models, and richer text signals.</p>
+              </div>
               <div class="rule">
                 <h3>What was built</h3>
                 <p>Training pipeline, baseline comparison, nonlinear model, diagnostics, report, poster, and static site.</p>
