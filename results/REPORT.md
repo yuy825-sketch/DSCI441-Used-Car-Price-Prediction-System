@@ -12,6 +12,7 @@ On a fixed train/test split (80/20, seed=441), the best broad-domain model achie
 - Linear baselines underfit; adding text helps; boosted trees provide the best broad-domain fit.
 - Error grows with price (**heteroskedasticity**), so “RMSE in dollars” must be interpreted relative to the price range.
 - The Streamlit demo provides an interactive “enter features → predict price” deliverable.
+- Advanced post-hoc diagnostics show clear subgroup and decile-level error differences, supporting segment-aware monitoring.
 
 ## 1. Problem statement and deliverables
 
@@ -249,11 +250,53 @@ In the mid‑market range, the top signals remain similar: age/mileage plus a sm
 
 The demo app turns the project into an interactive system: a user can input vehicle attributes and obtain an immediate price estimate. This matters for course deliverables because it demonstrates the model can be deployed as a simple product, not just evaluated offline. The demo also functions as a sanity check: it forces the inference path (preprocessing + model) to work end-to-end on a single-row input.
 
-## 10. Reproducibility
+## 10. Advanced post-hoc diagnostics (extension)
+
+To extend the original report without changing prior experiments, I added a post-hoc diagnostic layer on top of the best broad-domain run (`hgb_ordinal`). The extension analyzes **where** error concentrates by subgroup and by price/prediction deciles, which is useful for deployment-facing interpretation.
+
+<img src="advanced/mae_by_condition_hgb_ordinal.png" width="760" />
+
+*Figure 24. MAE by condition subgroup.*
+
+Condition-specific MAE differs substantially across subgroups, indicating that global MAE can hide segment-level risk. This supports reporting subgroup diagnostics for any practical deployment, especially when user inputs are concentrated in specific condition categories.
+
+<img src="advanced/mae_by_fuel_hgb_ordinal.png" width="760" />
+
+*Figure 25. MAE by fuel subgroup.*
+
+Fuel segments have different error scales, which reflects market heterogeneity: some segments have wider price variance and therefore larger absolute-dollar residuals. This is another reason to avoid relying on a single aggregated metric.
+
+<img src="advanced/bias_by_price_decile_hgb_ordinal.png" width="760" />
+
+*Figure 26. MAE and mean residual by true-price decile.*
+
+Decile diagnostics confirm a strong price-scale effect: MAE rises from about **$1.78k** in the lowest decile to about **$10.09k** in the highest decile. The mean residual line also changes across deciles, suggesting that decile-aware calibration or segment-specific post-processing could improve practical behavior.
+
+<img src="advanced/calibration_pred_vs_true_decile_hgb_ordinal.png" width="620" />
+
+*Figure 27. Decile-level calibration view (predicted mean vs true mean).*
+
+This plot provides a regression analogue of reliability diagnostics: if the decile points align with the diagonal, predicted and observed means agree better. The observed mean decile gap (from the extension summary) is around **$1.2k**, indicating nontrivial decile-level drift.
+
+<img src="advanced/mae_heatmap_condition_fuel_hgb_ordinal.png" width="620" />
+
+*Figure 28. MAE heatmap across condition × fuel combinations.*
+
+The heatmap shows that some segment intersections are much harder than others, which is consistent with the heteroskedastic and heterogeneous structure already observed in earlier sections.
+
+<img src="advanced/error_by_age_bucket_hgb_ordinal.png" width="700" />
+
+*Figure 29. MAE and MAPE across vehicle-age buckets.*
+
+Absolute and relative errors do not move identically across age buckets. Reporting both MAE and percentage error helps avoid misleading conclusions when segment price scales differ.
+
+**Extension takeaway**: the original conclusion (boosted trees are best overall) remains valid, but deployment interpretation is stronger when metrics are broken down by subgroup and by decile-level behavior.
+
+## 11. Reproducibility
 
 All experiments use a fixed random seed and a consistent train/test protocol so that results can be reproduced. Models are trained and evaluated through a uniform pipeline that standardizes preprocessing across experiments, which is essential for fair comparisons. The project includes automation to rerun experiments and regenerate figures, ensuring that the report is backed by repeatable computation rather than manual one-off runs.
 
-## 11. Limitations and future work
+## 12. Limitations and future work
 
 Limitations:
 - Listing prices are noisy and may not reflect final sale prices; scraped data can contain errors and duplicates.
@@ -264,12 +307,12 @@ Future work:
 - Segment-aware training/evaluation (separate models per vehicle type/price band).
 - Robust losses (Huber) or quantile regression to better model asymmetric or tail risk.
 - Add uncertainty estimates (prediction intervals) to communicate confidence for high-price cases.
+- Add subgroup-aware monitoring dashboards (condition/fuel/age) in the deployment layer.
 
-## 12. Conclusion
+## 13. Conclusion
 
 This project demonstrates a full regression workflow for used-car price prediction, from exploratory analysis through modeling, diagnostics, and an interactive demo. Linear baselines underfit; incorporating text improves performance; and boosted trees achieve the strongest broad-domain fit (R² > 0.80). Error analysis shows clear heteroskedasticity and emphasizes that absolute-dollar error targets must be interpreted relative to the price domain.
 
-## 13. Reference
+## 14. Reference
 
 Kaggle dataset: “Craigslist Cars & Trucks Data” (Austin Reese).
-
