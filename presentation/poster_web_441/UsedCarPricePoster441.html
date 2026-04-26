@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Used Car Price Prediction System - DSCI441 Poster</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap");
+
+    :root {
+      --bg: #f5f3eb;
+      --ink: #172323;
+      --muted: #4d6161;
+      --panel: #fffcf4;
+      --line: #cec7b8;
+      --green: #1c6c5e;
+      --green-soft: #e9f4f1;
+      --amber: #ab5b31;
+      --amber-soft: #faeee4;
+      --olive-soft: #edf2e3;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    html,
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 5mm;
+      background:
+        radial-gradient(circle at 12% -8%, #f0ddcb 0, transparent 26%),
+        radial-gradient(circle at 100% 0, #d9ece8 0, transparent 25%),
+        radial-gradient(circle at 95% 100%, #e2ebcf 0, transparent 26%),
+        var(--bg);
+    }
+
+    .poster {
+      border: 0.3mm solid var(--line);
+      border-radius: 4mm;
+      background: var(--panel);
+      min-height: calc(297mm - 10mm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero {
+      padding: 4mm 4.4mm 3.6mm;
+      border-bottom: 0.3mm solid var(--line);
+      background: linear-gradient(140deg, #fff8ea 0%, #f0f7f3 58%, #fff3e8 100%);
+    }
+
+    .eyebrow {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      font-size: 2.5mm;
+      color: var(--amber);
+    }
+
+    h1 {
+      margin: 1.5mm 0 0;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 8.1mm;
+      line-height: 0.98;
+    }
+
+    .subtitle {
+      margin: 2mm 0 0;
+      font-size: 2.9mm;
+      color: var(--muted);
+    }
+
+    .metrics {
+      margin-top: 2.2mm;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8mm;
+    }
+
+    .metric {
+      border: 0.25mm solid var(--line);
+      border-radius: 2mm;
+      background: #fff;
+      padding: 1.5mm 1.8mm 1.3mm;
+    }
+
+    .metric.warm {
+      background: var(--amber-soft);
+    }
+
+    .metric .label {
+      margin: 0;
+      font-size: 2.2mm;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    .metric .value {
+      margin: 0.8mm 0 0;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 6.1mm;
+      line-height: 1;
+    }
+
+    .metric .note {
+      margin: 0.8mm 0 0;
+      font-size: 2.3mm;
+      color: var(--muted);
+    }
+
+    .content {
+      padding: 2.8mm;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      flex: 1 1 auto;
+    }
+
+    .col {
+      display: grid;
+      gap: 2mm;
+      align-content: start;
+    }
+
+    .panel {
+      border: 0.25mm solid var(--line);
+      border-radius: 2.2mm;
+      background: #fff;
+      padding: 1.8mm 1.9mm;
+    }
+
+    .panel.soft-green {
+      background: var(--green-soft);
+    }
+
+    .panel.soft-amber {
+      background: var(--amber-soft);
+    }
+
+    .panel.soft-olive {
+      background: var(--olive-soft);
+    }
+
+    .panel .kicker {
+      margin: 0;
+      font-size: 2.1mm;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    .panel h2 {
+      margin: 0.8mm 0 1.1mm;
+      font-size: 4.2mm;
+      line-height: 1.05;
+      font-family: "Source Serif 4", Georgia, serif;
+    }
+
+    .panel p {
+      margin: 0;
+      font-size: 2.6mm;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .bullets {
+      margin: 1mm 0 0;
+      padding-left: 3.5mm;
+      font-size: 2.55mm;
+      color: var(--muted);
+      display: grid;
+      gap: 0.7mm;
+    }
+
+    .stats {
+      margin-top: 1.2mm;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1mm;
+    }
+
+    .stat {
+      border: 0.22mm solid var(--line);
+      border-radius: 1.6mm;
+      background: #fff;
+      padding: 1mm 1.2mm;
+    }
+
+    .stat .n {
+      margin: 0;
+      font-size: 4.2mm;
+      line-height: 1;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-weight: 700;
+    }
+
+    .stat .d {
+      margin: 0.5mm 0 0;
+      font-size: 2.1mm;
+      color: var(--muted);
+    }
+
+    .fig {
+      border: 0.22mm solid var(--line);
+      border-radius: 1.7mm;
+      background: #fff;
+      padding: 1mm;
+      margin-top: 1.2mm;
+    }
+
+    .fig img {
+      width: 100%;
+      display: block;
+      border-radius: 1.2mm;
+    }
+
+    .fig figcaption {
+      margin-top: 0.9mm;
+      font-size: 2.1mm;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    .mini-grid {
+      margin-top: 1.1mm;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1mm;
+    }
+
+    .mini {
+      border: 0.22mm solid var(--line);
+      border-radius: 1.5mm;
+      background: #fff;
+      padding: 1mm;
+    }
+
+    .mini p {
+      margin: 0;
+      font-size: 2.25mm;
+      color: var(--muted);
+    }
+
+    .mini strong {
+      color: var(--ink);
+    }
+
+    .footer {
+      margin: 0 2.8mm 2.8mm;
+      border: 0.25mm solid var(--line);
+      border-radius: 2mm;
+      background: linear-gradient(180deg, #eff6e9 0%, #e9f1df 100%);
+      padding: 1.8mm 2mm;
+    }
+
+    .footer h3 {
+      margin: 0;
+      font-size: 4.1mm;
+      font-family: "Source Serif 4", Georgia, serif;
+      color: #3f5a39;
+    }
+
+    .footer p {
+      margin: 0.8mm 0 0;
+      font-size: 2.5mm;
+      color: #4a5e44;
+      line-height: 1.35;
+    }
+
+    @media print {
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+        overflow: hidden;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        height: 297mm;
+        padding: 3mm;
+        overflow: hidden;
+      }
+
+      .poster {
+        min-height: calc(297mm - 6mm);
+        transform: scale(0.92);
+        transform-origin: top left;
+        width: calc(100% / 0.92);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <article class="poster">
+      <header class="hero">
+        <p class="eyebrow">DSCI441 Course Poster</p>
+        <h1>Used Car Price Prediction System</h1>
+        <p class="subtitle">
+          End-to-end Craigslist price regression pipeline with baseline comparison, nonlinear modeling, extension diagnostics,
+          and deployment-facing web demo.
+        </p>
+        <div class="metrics">
+          <div class="metric">
+            <p class="label">Best broad-domain R²</p>
+            <p class="value">0.8061</p>
+            <p class="note">HistGradientBoosting (`hgb_ordinal`)</p>
+          </div>
+          <div class="metric warm">
+            <p class="label">Best broad-domain RMSE</p>
+            <p class="value">$6,649</p>
+            <p class="note">Test split (80/20, seed 441)</p>
+          </div>
+          <div class="metric">
+            <p class="label">Extension diagnostics</p>
+            <p class="value">6 figures</p>
+            <p class="note">Subgroup + decile diagnostics</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="col">
+          <section class="panel">
+            <p class="kicker">Problem Description / Motivation</p>
+            <h2>Why used-car price regression is not a single-metric task</h2>
+            <p>
+              Price prediction must handle heavy tails, missingness, and nonlinear segment interactions.
+              A single global RMSE can hide large differences across price ranges and vehicle segments.
+            </p>
+            <ul class="bullets">
+              <li>Target is strongly right-skewed.</li>
+              <li>Many categorical fields are sparse/missing.</li>
+              <li>Error scale increases with true price (heteroskedasticity).</li>
+            </ul>
+            <figure class="fig">
+              <img src="assets/pipeline_overview.png" alt="Pipeline overview" />
+              <figcaption>Consistent workflow from cleaning to model export and interactive demo.</figcaption>
+            </figure>
+          </section>
+
+          <section class="panel soft-green">
+            <p class="kicker">Dataset Description</p>
+            <h2>Craigslist listings with mixed tabular structure</h2>
+            <p>
+              The dataset contains 426,880 raw listings with numeric, categorical, and optional text fields.
+              Cleaning and feature derivation produce a stable training table for fair model comparison.
+            </p>
+            <div class="stats">
+              <div class="stat">
+                <p class="n">426,880</p>
+                <p class="d">Raw listings</p>
+              </div>
+              <div class="stat">
+                <p class="n">17+</p>
+                <p class="d">Core input attributes</p>
+              </div>
+              <div class="stat">
+                <p class="n">Heavy-tail</p>
+                <p class="d">Price distribution shape</p>
+              </div>
+              <div class="stat">
+                <p class="n">Missingness</p>
+                <p class="d">High in several categorical columns</p>
+              </div>
+            </div>
+            <figure class="fig">
+              <img src="assets/mae_by_condition_hgb_ordinal.png" alt="MAE by condition" />
+              <figcaption>Extension diagnostics confirm subgroup-level MAE variation.</figcaption>
+            </figure>
+          </section>
+
+          <section class="panel soft-olive">
+            <p class="kicker">Experiments / Model Selection</p>
+            <h2>Linear baselines, text-augmented ridge, and boosted trees</h2>
+            <p>
+              Experiments include OLS, Ridge, Lasso, Ridge+TF-IDF, and HistGradientBoosting.
+              The nonlinear model gives the strongest broad-domain fit while preserving a reproducible pipeline.
+            </p>
+            <figure class="fig">
+              <img src="assets/model_comparison_r2.png" alt="R2 comparison chart" />
+              <figcaption>Boosted trees lead in broad-domain R².</figcaption>
+            </figure>
+            <figure class="fig">
+              <img src="assets/perm_importance_hgb_ordinal.png" alt="Permutation importance" />
+              <figcaption>Age/mileage and key segment attributes dominate signal contribution.</figcaption>
+            </figure>
+          </section>
+        </div>
+
+        <div class="col">
+          <section class="panel soft-amber">
+            <p class="kicker">Evaluation</p>
+            <h2>Global fit is strong, but error behavior is segment-dependent</h2>
+            <p>
+              The best model achieves high broad-domain fit, yet error distribution differs by price decile and subgroup.
+              Extension diagnostics expose these deployment-relevant patterns.
+            </p>
+            <div class="mini-grid">
+              <div class="mini">
+                <p><strong>Broad-domain best:</strong> R² 0.8061, RMSE 6649, MAE 3384.</p>
+              </div>
+              <div class="mini">
+                <p><strong>Decile drift:</strong> MAE rises from about $1.8k to about $10.1k (D1 -> D10).</p>
+              </div>
+            </div>
+            <figure class="fig">
+              <img src="assets/true_vs_pred_hgb_ordinal.png" alt="True vs predicted" />
+              <figcaption>High-price tail remains harder even with best overall model.</figcaption>
+            </figure>
+            <figure class="fig">
+              <img src="assets/bias_by_price_decile_hgb_ordinal.png" alt="Bias by decile" />
+              <figcaption>MAE and mean residual shift by true-price decile.</figcaption>
+            </figure>
+            <figure class="fig">
+              <img src="assets/calibration_pred_vs_true_decile_hgb_ordinal.png" alt="Calibration plot by decile" />
+              <figcaption>Decile-level predicted vs true means reveal calibration-style drift.</figcaption>
+            </figure>
+          </section>
+
+          <section class="panel">
+            <p class="kicker">Deployment and Interpretability</p>
+            <h2>From offline metrics to user-facing diagnostics</h2>
+            <p>
+              The Streamlit app provides an input -> predict interface. The extension recommends pairing predictions with
+              subgroup/decile diagnostics so users can interpret uncertainty by market segment.
+            </p>
+            <figure class="fig">
+              <img src="assets/streamlit_demo.png" alt="Streamlit demo" />
+              <figcaption>Interactive demo for course deliverable and end-to-end validation.</figcaption>
+            </figure>
+            <div class="mini-grid">
+              <div class="mini">
+                <p><strong>Recommended production view:</strong> show global metrics and segment-aware diagnostics together.</p>
+              </div>
+              <div class="mini">
+                <p><strong>Future direction:</strong> segment-specific models and interval predictions for risk-aware pricing.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <h3>Takeaway</h3>
+        <p>
+          This project demonstrates a complete DSCI441 workflow: reproducible training, strong nonlinear performance, and
+          an upgraded diagnostic layer that turns aggregate metrics into deployment-relevant insights.
+        </p>
+      </footer>
+    </article>
+  </div>
+</body>
+</html>
