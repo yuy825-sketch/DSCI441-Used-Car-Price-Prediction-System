@@ -37,7 +37,12 @@ Scope: final verification after DSCI441 upgrade phases (advanced diagnostics, re
 - PDF check:
   - `pdfinfo .../UsedCarPricePoster441.pdf` -> `Pages: 1`, `Page size: A4` (PASS).
 
-## 6) Residual notes
+## 6) Lightweight runtime sanity
+
+- Project smoke test:
+  - `.venv/bin/python -m dsci441_used_car.smoke` -> `OK: imports` and test metrics printed (PASS).
+
+## 7) Residual notes
 
 - Checks were focused on packaging integrity and deliverable readiness.
 - Full retraining was not re-run in this final check because the extension figures are already generated and versioned.
