@@ -9,3 +9,4 @@ Large artifacts are intentionally not committed:
 Start here:
 - Results report (summary + conclusions): [`REPORT.md`](REPORT.md)
 - Figure index (what each image means): [`FIGURES.md`](FIGURES.md)
+- Advanced diagnostics extension: [`advanced/README.md`](advanced/README.md)

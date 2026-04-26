@@ -124,3 +124,30 @@ Each experiment exports:
 - **What**: Screenshot of the Streamlit demo page (run-dir loaded, ready for input/prediction).
 - **How generated**: `bash scripts/capture_streamlit_screenshot.sh results/streamlit_demo.png`
 - **Conclusion**: Demonstrates a working interactive “enter features → predict price” workflow for the course deliverable.
+
+## Advanced extension (`results/advanced/`)
+
+### `advanced/mae_by_condition_hgb_ordinal.png`
+- **What**: Mean absolute error (USD) across major `condition` subgroups.
+- **How generated**: `python scripts/advanced_diagnostics.py --run-dir runs/20260225_155344__hgb-ordinal --out-dir results/advanced --tag hgb_ordinal`
+- **Conclusion**: Error concentration differs by listing condition subgroup; global MAE hides subgroup variance.
+
+### `advanced/mae_by_fuel_hgb_ordinal.png`
+- **What**: Mean absolute error across major `fuel` subgroups.
+- **Conclusion**: Fuel-based market segments have different dollar-error scales.
+
+### `advanced/bias_by_price_decile_hgb_ordinal.png`
+- **What**: MAE bars + mean residual line by true-price decile.
+- **Conclusion**: Error magnitude rises with price decile and bias is not uniform over the price range.
+
+### `advanced/calibration_pred_vs_true_decile_hgb_ordinal.png`
+- **What**: Decile-level predicted-vs-true mean comparison with an ideal `pred=true` reference.
+- **Conclusion**: Provides a regression calibration-style view to diagnose where decile-level predictions drift from observed means.
+
+### `advanced/mae_heatmap_condition_fuel_hgb_ordinal.png`
+- **What**: MAE heatmap across `condition × fuel` combinations (major cells only).
+- **Conclusion**: Some segment intersections are substantially harder than others, motivating segment-aware monitoring.
+
+### `advanced/error_by_age_bucket_hgb_ordinal.png`
+- **What**: MAE and MAPE across vehicle-age buckets.
+- **Conclusion**: Relative and absolute errors do not scale identically with vehicle age; both metrics are useful for deployment interpretation.
