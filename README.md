@@ -6,6 +6,8 @@ Quick links:
 - Full report: [`results/REPORT.md`](results/REPORT.md)
 - Results index: [`results/README.md`](results/README.md)
 - Figure index (what each image means): [`results/FIGURES.md`](results/FIGURES.md)
+- GitHub Pages site entry: [`docs/index.html`](docs/index.html)
+- GitHub Pages results deep dive: [`docs/results.html`](docs/results.html)
 
 ## Project goals (from `info.md`)
 - Implement and compare multiple regression models (**OLS**, **Ridge**, **Lasso**)

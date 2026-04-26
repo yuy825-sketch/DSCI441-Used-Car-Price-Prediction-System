@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSCI441 Results Deep Dive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="site-wrap">
+    <header class="topbar">
+      <div class="brand">DSCI441 Results Deep Dive</div>
+      <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="results.html">Results</a>
+        <a href="../results/REPORT.md">REPORT.md</a>
+        <a href="../results/advanced/README.md">Advanced README</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Diagnostics and Interpretation</p>
+      <h1>From global metrics to segment-aware error behavior</h1>
+      <p>
+        This page summarizes why the best broad-domain model is useful, where it still struggles, and how advanced extension
+        diagnostics improve deployment interpretation.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tag</th>
+              <th>Model</th>
+              <th>R²</th>
+              <th>RMSE</th>
+              <th>MAE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>hgb_ordinal</td><td>HistGradientBoosting</td><td><strong>0.8061</strong></td><td>6649.38</td><td>3383.88</td></tr>
+            <tr><td>ridge_text_a20</td><td>Ridge + TF-IDF</td><td>0.7275</td><td>7865.90</td><td>4416.09</td></tr>
+            <tr><td>ridge</td><td>Ridge</td><td>0.5835</td><td>9665.96</td><td>5684.14</td></tr>
+            <tr><td>ols</td><td>OLS</td><td>0.5834</td><td>9667.80</td><td>5689.79</td></tr>
+            <tr><td>lasso</td><td>Lasso</td><td>0.5540</td><td>10002.64</td><td>5973.56</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker">Core Model Behavior</p>
+      <h2>Strong fit with visible heavy-tail effects</h2>
+      <div class="gallery">
+        <figure class="fig">
+          <img src="assets/true_vs_pred_hgb_ordinal.png" alt="True versus predicted for hgb_ordinal" />
+          <figcaption>Prediction quality is strong overall, but high-price tail variance remains large.</figcaption>
+        </figure>
+        <figure class="fig">
+          <img src="assets/perm_importance_hgb_ordinal.png" alt="Permutation importance for hgb_ordinal" />
+          <figcaption>Age/mileage and key categorical segment attributes dominate signal contribution.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker">Advanced Figure Set</p>
+      <h2>New diagnostics added in this upgrade</h2>
+      <div class="gallery">
+        <figure class="fig">
+          <img src="assets/mae_by_condition_hgb_ordinal.png" alt="MAE by condition subgroup" />
+          <figcaption>Condition subgroup MAE is uneven; global MAE hides segment variation.</figcaption>
+        </figure>
+        <figure class="fig">
+          <img src="assets/mae_by_fuel_hgb_ordinal.png" alt="MAE by fuel subgroup" />
+          <figcaption>Fuel segment errors differ in absolute-dollar scale.</figcaption>
+        </figure>
+        <figure class="fig">
+          <img src="assets/bias_by_price_decile_hgb_ordinal.png" alt="Bias by price decile" />
+          <figcaption>MAE rises sharply by true-price decile, with nonuniform mean residual.</figcaption>
+        </figure>
+        <figure class="fig">
+          <img src="assets/calibration_pred_vs_true_decile_hgb_ordinal.png" alt="Decile calibration view" />
+          <figcaption>Decile-level predicted mean vs true mean gives a regression calibration perspective.</figcaption>
+        </figure>
+        <figure class="fig">
+          <img src="assets/mae_heatmap_condition_fuel_hgb_ordinal.png" alt="Condition fuel heatmap" />
+          <figcaption>Hard segment intersections become visible via condition × fuel MAE heatmap.</figcaption>
+        </figure>
+        <figure class="fig">
+          <img src="assets/error_by_age_bucket_hgb_ordinal.png" alt="Error by age bucket" />
+          <figcaption>MAE and MAPE move differently across vehicle-age buckets.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker">Interpretation</p>
+      <h2>Deployment-facing conclusions</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>What stays true</h3>
+          <p>
+            The broad-domain best model remains `hgb_ordinal`. The extension does not change this ranking.
+          </p>
+          <p>
+            The new diagnostics strengthen interpretation by showing where the model is reliable and where uncertainty is larger.
+          </p>
+        </article>
+        <article class="card">
+          <h3>What changes in practice</h3>
+          <p>
+            Reporting only R²/RMSE is no longer enough. Segment-aware dashboards (condition, fuel, age, and price deciles)
+            should accompany predictions in a user-facing deployment.
+          </p>
+          <p>
+            This is especially relevant for high-price listings where absolute-dollar error naturally scales up.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      Static GitHub Pages artifact for DSCI441. For full reproducible details, see
+      <a href="../results/REPORT.md">`results/REPORT.md`</a> and <a href="../results/advanced/README.md">`results/advanced/README.md`</a>.
+    </footer>
+  </div>
+</body>
+</html>

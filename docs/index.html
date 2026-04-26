@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSCI441 Used Car Price Prediction System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="site-wrap">
+    <header class="topbar">
+      <div class="brand">DSCI441 Project Site</div>
+      <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="results.html">Results</a>
+        <a href="#demo">Static Demo</a>
+        <a href="../app/app.py">Streamlit Source</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Used Car Price Prediction System</p>
+      <h1>From Regression Baselines to Deployment-Facing Diagnostics</h1>
+      <p>
+        This project predicts Craigslist used-car prices with a reproducible pipeline: data cleaning, feature engineering,
+        baseline and nonlinear models, error diagnostics, and an interactive demo path. The extension in this site adds
+        subgroup- and decile-level behavior analysis to make model performance more deployment-relevant.
+      </p>
+      <div class="metric-row">
+        <div class="metric">
+          <p class="label">Best Broad-Domain R²</p>
+          <p class="value">0.8061</p>
+          <p class="note">HistGradientBoostingRegressor (`hgb_ordinal`)</p>
+        </div>
+        <div class="metric warm">
+          <p class="label">Best Broad-Domain RMSE</p>
+          <p class="value">$6,649</p>
+          <p class="note">Held-out test split, 80/20 with seed 441</p>
+        </div>
+        <div class="metric">
+          <p class="label">Extension Figures Added</p>
+          <p class="value">6</p>
+          <p class="note">Subgroup/decile diagnostics in `results/advanced/`</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker">Problem / Data</p>
+      <h2>Heavy-tailed target, missingness, and market heterogeneity</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Why the problem is hard</h3>
+          <p>
+            Used-car prices are highly right-skewed and segment-dependent. A single RMSE number can hide meaningful error
+            differences across price ranges and subgroups. This motivates both nonlinear modeling and richer diagnostics.
+          </p>
+          <div class="btn-row">
+            <span class="pill">426,880 raw rows</span>
+            <span class="pill">Craigslist dataset</span>
+            <span class="pill">Leakage-aware split</span>
+          </div>
+        </article>
+        <figure class="fig">
+          <img src="assets/pipeline_overview.png" alt="Pipeline overview for DSCI441 project" />
+          <figcaption>End-to-end pipeline from cleaned dataset to exported figures and demo app.</figcaption>
+        </figure>
+      </div>
+      <div class="gallery">
+        <figure class="fig">
+          <img src="assets/price_hist_logx.png" alt="Price histogram on log-scaled x-axis" />
+          <figcaption>Price distribution is heavy-tailed, motivating log-target training.</figcaption>
+        </figure>
+        <figure class="fig">
+          <img src="assets/missingness_top20.png" alt="Top missingness columns" />
+          <figcaption>Several categorical columns are sparse, requiring robust imputation.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker">Modeling</p>
+      <h2>Comparative modeling and a strong nonlinear baseline</h2>
+      <p>
+        The repository keeps linear baselines (OLS/Ridge/Lasso), text-augmented Ridge, and boosted trees in one consistent
+        pipeline. The nonlinear model leads on broad-domain fit while preserving reproducibility and exportability.
+      </p>
+      <div class="gallery">
+        <figure class="fig">
+          <img src="assets/model_comparison_r2.png" alt="R2 model comparison chart" />
+          <figcaption>Boosted trees achieve the strongest broad-domain R².</figcaption>
+        </figure>
+        <figure class="fig">
+          <img src="assets/model_comparison_rmse.png" alt="RMSE model comparison chart" />
+          <figcaption>RMSE trade-offs vary with price-domain coverage.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block" id="demo">
+      <p class="kicker">GitHub-friendly Demo</p>
+      <h2>How to use this site (precomputed static flow)</h2>
+      <p>
+        GitHub Pages cannot run live model inference directly, so this section provides precomputed example scenarios that
+        mimic the Streamlit workflow: choose a case, load, inspect estimate and uncertainty note.
+      </p>
+      <div class="btn-row">
+        <button class="btn" data-case-btn="commuter">Mid-market commuter</button>
+        <button class="btn" data-case-btn="pickup">Diesel utility pickup</button>
+        <button class="btn" data-case-btn="older">Older low-price listing</button>
+      </div>
+      <div class="demo-shell">
+        <div id="demo-status" class="demo-status">Preparing static scenario ...</div>
+        <div id="demo-loader" class="loader"><span></span></div>
+        <div id="demo-result" class="demo-result" style="display:none;">
+          <h4 id="demo-title">Scenario</h4>
+          <div id="demo-price" class="price">$--</div>
+          <div class="small">Estimated range: <strong id="demo-range">--</strong></div>
+          <div class="small">Uncertainty note: <strong id="demo-confidence">--</strong></div>
+          <div class="small" id="demo-note"></div>
+          <ul id="demo-fields" class="bullets"></ul>
+        </div>
+      </div>
+      <div class="gallery">
+        <figure class="fig">
+          <img src="assets/streamlit_demo.png" alt="Streamlit demo screenshot" />
+          <figcaption>Original interactive Streamlit interface in this repository.</figcaption>
+        </figure>
+        <figure class="fig">
+          <img src="assets/true_vs_pred_hgb_ordinal.png" alt="True versus predicted plot for best run" />
+          <figcaption>Best broad-domain run still shows larger variance on the high-price tail.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker">Advanced Extension</p>
+      <h2>Subgroup and decile diagnostics added in this upgrade</h2>
+      <p>
+        The extension adds diagnostics beyond aggregate metrics: subgroup MAE, decile error profiles, calibration-style views,
+        and age-bucket behavior. These plots are available in detail on the <a href="results.html">Results page</a>.
+      </p>
+      <div class="btn-row">
+        <a class="btn" href="results.html">Open full results deep dive</a>
+        <a class="btn" href="../results/REPORT.md">Open REPORT.md</a>
+        <a class="btn" href="../results/advanced/README.md">Open advanced README</a>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      Educational project for DSCI441. This website is a static companion to the repository and does not perform live model
+      inference on GitHub Pages.
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
