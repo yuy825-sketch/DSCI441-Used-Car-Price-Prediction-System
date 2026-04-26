@@ -8,6 +8,8 @@
     @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap");
 
     :root {
+      --page-w: 250mm;
+      --page-h: 430mm;
       --bg: #f5f3eb;
       --ink: #172323;
       --muted: #4d6161;
@@ -39,11 +41,17 @@
       font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
     }
 
+    body {
+      display: grid;
+      place-items: center;
+      padding: 10px 0;
+    }
+
     .page {
-      width: 210mm;
-      min-height: 297mm;
+      width: var(--page-w);
+      min-height: var(--page-h);
       margin: 0 auto;
-      padding: 5mm;
+      padding: 3mm;
       background:
         radial-gradient(circle at 12% -8%, #f0ddcb 0, transparent 26%),
         radial-gradient(circle at 100% 0, #d9ece8 0, transparent 25%),
@@ -55,14 +63,14 @@
       border: 0.3mm solid var(--line);
       border-radius: 4mm;
       background: var(--panel);
-      min-height: calc(297mm - 10mm);
+      min-height: calc(var(--page-h) - 6mm);
       overflow: hidden;
       display: flex;
       flex-direction: column;
     }
 
     .hero {
-      padding: 4mm 4.4mm 3.6mm;
+      padding: 3.4mm 4mm 3mm;
       border-bottom: 0.3mm solid var(--line);
       background: linear-gradient(140deg, #fff8ea 0%, #f0f7f3 58%, #fff3e8 100%);
     }
@@ -77,23 +85,23 @@
     }
 
     h1 {
-      margin: 1.5mm 0 0;
+      margin: 1.1mm 0 0;
       font-family: "Source Serif 4", Georgia, serif;
-      font-size: 8.1mm;
+      font-size: 7.6mm;
       line-height: 0.98;
     }
 
     .subtitle {
-      margin: 2mm 0 0;
-      font-size: 2.9mm;
+      margin: 1.6mm 0 0;
+      font-size: 2.55mm;
       color: var(--muted);
     }
 
     .metrics {
-      margin-top: 2.2mm;
+      margin-top: 1.8mm;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.8mm;
+      gap: 1.5mm;
     }
 
     .metric {
@@ -117,29 +125,29 @@
     }
 
     .metric .value {
-      margin: 0.8mm 0 0;
+      margin: 0.7mm 0 0;
       font-family: "Source Serif 4", Georgia, serif;
-      font-size: 6.1mm;
+      font-size: 5.8mm;
       line-height: 1;
     }
 
     .metric .note {
-      margin: 0.8mm 0 0;
-      font-size: 2.3mm;
+      margin: 0.7mm 0 0;
+      font-size: 2.15mm;
       color: var(--muted);
     }
 
     .content {
-      padding: 2.8mm;
+      padding: 2.2mm;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2mm;
+      gap: 1.6mm;
       flex: 1 1 auto;
     }
 
     .col {
       display: grid;
-      gap: 2mm;
+      gap: 1.6mm;
       align-content: start;
     }
 
@@ -147,7 +155,7 @@
       border: 0.25mm solid var(--line);
       border-radius: 2.2mm;
       background: #fff;
-      padding: 1.8mm 1.9mm;
+      padding: 1.55mm 1.7mm;
     }
 
     .panel.soft-green {
@@ -172,33 +180,33 @@
     }
 
     .panel h2 {
-      margin: 0.8mm 0 1.1mm;
-      font-size: 4.2mm;
+      margin: 0.6mm 0 0.9mm;
+      font-size: 3.85mm;
       line-height: 1.05;
       font-family: "Source Serif 4", Georgia, serif;
     }
 
     .panel p {
       margin: 0;
-      font-size: 2.6mm;
+      font-size: 2.32mm;
       color: var(--muted);
-      line-height: 1.35;
+      line-height: 1.28;
     }
 
     .bullets {
-      margin: 1mm 0 0;
+      margin: 0.8mm 0 0;
       padding-left: 3.5mm;
-      font-size: 2.55mm;
+      font-size: 2.28mm;
       color: var(--muted);
       display: grid;
-      gap: 0.7mm;
+      gap: 0.45mm;
     }
 
     .stats {
-      margin-top: 1.2mm;
+      margin-top: 1mm;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1mm;
+      gap: 0.9mm;
     }
 
     .stat {
@@ -210,7 +218,7 @@
 
     .stat .n {
       margin: 0;
-      font-size: 4.2mm;
+      font-size: 3.9mm;
       line-height: 1;
       font-family: "Source Serif 4", Georgia, serif;
       font-weight: 700;
@@ -226,8 +234,8 @@
       border: 0.22mm solid var(--line);
       border-radius: 1.7mm;
       background: #fff;
-      padding: 1mm;
-      margin-top: 1.2mm;
+      padding: 0.75mm;
+      margin-top: 0.95mm;
     }
 
     .fig img {
@@ -237,14 +245,26 @@
     }
 
     .fig figcaption {
-      margin-top: 0.9mm;
-      font-size: 2.1mm;
+      margin-top: 0.75mm;
+      font-size: 1.95mm;
       color: var(--muted);
-      line-height: 1.3;
+      line-height: 1.22;
+    }
+
+    .fig-row {
+      margin-top: 0.95mm;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1mm;
+      align-items: start;
+    }
+
+    .fig-row .fig {
+      margin-top: 0;
     }
 
     .mini-grid {
-      margin-top: 1.1mm;
+      margin-top: 0.95mm;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1mm;
@@ -259,7 +279,7 @@
 
     .mini p {
       margin: 0;
-      font-size: 2.25mm;
+      font-size: 2.1mm;
       color: var(--muted);
     }
 
@@ -268,16 +288,16 @@
     }
 
     .tight-bullets {
-      margin: 1mm 0 0;
+      margin: 0.8mm 0 0;
       padding-left: 3.4mm;
-      font-size: 2.35mm;
+      font-size: 2.18mm;
       color: var(--muted);
       display: grid;
-      gap: 0.55mm;
+      gap: 0.42mm;
     }
 
     .rule-grid {
-      margin-top: 1.1mm;
+      margin-top: 0.9mm;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1mm;
@@ -292,19 +312,19 @@
 
     .rule h3 {
       margin: 0;
-      font-size: 2.4mm;
+      font-size: 2.22mm;
       line-height: 1.15;
       font-family: "Source Serif 4", Georgia, serif;
     }
 
     .rule p {
-      margin: 0.7mm 0 0;
-      font-size: 2.15mm;
-      line-height: 1.28;
+      margin: 0.55mm 0 0;
+      font-size: 2.02mm;
+      line-height: 1.22;
     }
 
     .micro-grid {
-      margin-top: 1.1mm;
+      margin-top: 0.9mm;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1mm;
@@ -319,60 +339,71 @@
 
     .micro h3 {
       margin: 0;
-      font-size: 2.35mm;
+      font-size: 2.18mm;
       line-height: 1.15;
       font-family: "Source Serif 4", Georgia, serif;
     }
 
     .micro p {
-      margin: 0.7mm 0 0;
-      font-size: 2.08mm;
-      line-height: 1.28;
+      margin: 0.55mm 0 0;
+      font-size: 1.95mm;
+      line-height: 1.22;
     }
 
     .footer {
-      margin: 0 2.8mm 2.8mm;
+      margin: 0 2.2mm 2.2mm;
       border: 0.25mm solid var(--line);
       border-radius: 2mm;
       background: linear-gradient(180deg, #eff6e9 0%, #e9f1df 100%);
-      padding: 1.8mm 2mm;
+      padding: 1.5mm 1.8mm;
     }
 
     .footer h3 {
       margin: 0;
-      font-size: 4.1mm;
+      font-size: 3.75mm;
       font-family: "Source Serif 4", Georgia, serif;
       color: #3f5a39;
     }
 
     .footer p {
-      margin: 0.8mm 0 0;
-      font-size: 2.5mm;
+      margin: 0.7mm 0 0;
+      font-size: 2.2mm;
       color: #4a5e44;
-      line-height: 1.35;
+      line-height: 1.24;
     }
 
     @media print {
+      @page {
+        size: var(--page-w) var(--page-h);
+        margin: 0;
+      }
+
       html,
       body {
-        width: 210mm;
-        height: 297mm;
-        overflow: hidden;
+        width: var(--page-w);
+        min-height: var(--page-h);
+        background: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      body {
+        display: block;
+        padding: 0;
       }
 
       .page {
-        width: 210mm;
-        min-height: 297mm;
-        height: 297mm;
-        padding: 3mm;
-        overflow: hidden;
+        width: var(--page-w);
+        min-height: var(--page-h);
+        margin: 0;
+        padding: 0;
       }
 
       .poster {
-        min-height: calc(297mm - 6mm);
-        transform: scale(0.92);
-        transform-origin: top left;
-        width: calc(100% / 0.92);
+        min-height: var(--page-h);
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
       }
     }
   </style>
@@ -533,17 +564,19 @@
               </div>
             </div>
             <figure class="fig">
-              <img src="assets/true_vs_pred_hgb_ordinal.png" alt="True vs predicted" />
-              <figcaption>High-price tail remains harder even with best overall model.</figcaption>
-            </figure>
-            <figure class="fig">
               <img src="assets/bias_by_price_decile_hgb_ordinal.png" alt="Bias by decile" />
               <figcaption>MAE and mean residual shift by true-price decile.</figcaption>
             </figure>
-            <figure class="fig">
-              <img src="assets/calibration_pred_vs_true_decile_hgb_ordinal.png" alt="Calibration plot by decile" />
-              <figcaption>Decile-level predicted vs true means reveal calibration-style drift.</figcaption>
-            </figure>
+            <div class="fig-row">
+              <figure class="fig">
+                <img src="assets/true_vs_pred_hgb_ordinal.png" alt="True vs predicted" />
+                <figcaption>High-price tail remains harder even with best overall model.</figcaption>
+              </figure>
+              <figure class="fig">
+                <img src="assets/calibration_pred_vs_true_decile_hgb_ordinal.png" alt="Calibration plot by decile" />
+                <figcaption>Decile-level predicted vs true means reveal calibration-style drift.</figcaption>
+              </figure>
+            </div>
             <div class="micro-grid">
               <div class="micro">
                 <h3>What the figures show</h3>
@@ -596,6 +629,16 @@
               <div class="rule">
                 <h3>What remains open</h3>
                 <p>Intervals, segment-specific models, and stronger geographic robustness are next logical extensions.</p>
+              </div>
+            </div>
+            <div class="micro-grid">
+              <div class="micro">
+                <h3>Why the packaging matters</h3>
+                <p>The same findings now exist in report, poster, static site, and demo form, which makes the project easier to review and reuse.</p>
+              </div>
+              <div class="micro">
+                <h3>Why it is still honest</h3>
+                <p>The added materials improve communication and diagnosis, but they do not pretend the model is a finished commercial pricing engine.</p>
               </div>
             </div>
           </section>
