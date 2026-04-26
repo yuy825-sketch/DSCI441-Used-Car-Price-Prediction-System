@@ -458,6 +458,14 @@ tr:last-child td {
   gap: 12px;
 }
 
+.deliverable-grid,
+.timeline-grid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
 .score-card {
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -492,13 +500,40 @@ tr:last-child td {
   font-size: 13px;
 }
 
+.deliverable,
+.timeline-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  padding: 12px;
+}
+
+.deliverable h3,
+.timeline-card h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.deliverable p,
+.timeline-card p {
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.timeline-card {
+  background: linear-gradient(180deg, #fff 0%, #f7f2e7 100%);
+}
+
 @media (max-width: 1100px) {
   .metric-row,
   .grid-2,
   .gallery,
   .insight-grid,
   .score-grid,
-  .step-strip {
+  .step-strip,
+  .deliverable-grid,
+  .timeline-grid {
     grid-template-columns: 1fr;
   }
 

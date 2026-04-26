@@ -53,6 +53,11 @@
     <section class="block">
       <p class="kicker">Core Model Behavior</p>
       <h2>Strong fit with visible heavy-tail effects</h2>
+      <p>
+        The strongest model is useful because it tracks the broad market well enough to support meaningful ranking and
+        approximate valuation. It is still imperfect in the expensive tail, which is exactly why the extension diagnostics
+        matter: they explain where a single global score stops being descriptive enough.
+      </p>
       <div class="gallery">
         <figure class="fig">
           <img src="assets/true_vs_pred_hgb_ordinal.png" alt="True versus predicted for hgb_ordinal" />
@@ -68,6 +73,10 @@
     <section class="block">
       <p class="kicker">Advanced Figure Set</p>
       <h2>New diagnostics added in this upgrade</h2>
+      <p>
+        These plots were added specifically to turn the original repository from a model-comparison deliverable into a more
+        complete evaluation package. They do not replace the core metrics; they contextualize them.
+      </p>
       <div class="gallery">
         <figure class="fig">
           <img src="assets/mae_by_condition_hgb_ordinal.png" alt="MAE by condition subgroup" />
@@ -166,6 +175,55 @@
           </p>
           <p>
             This is especially relevant for high-price listings where absolute-dollar error naturally scales up.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker">What Was Actually Done</p>
+      <h2>This upgrade adds analysis, not just styling</h2>
+      <div class="deliverable-grid">
+        <article class="deliverable">
+          <h3>New figure generation</h3>
+          <p>
+            A dedicated extension script now produces subgroup MAE plots, age-bucket diagnostics, price-decile bias views,
+            and an interaction heatmap for condition x fuel.
+          </p>
+        </article>
+        <article class="deliverable">
+          <h3>Report integration</h3>
+          <p>
+            The markdown report was extended with a new diagnostics section so the additional figures are interpreted inside
+            the main written deliverable rather than left as detached assets.
+          </p>
+        </article>
+        <article class="deliverable">
+          <h3>Deployment packaging</h3>
+          <p>
+            The same upgraded story was then carried into a GitHub Pages site and a local poster workflow, which is why the
+            repository now reads as a coherent package instead of a loose set of plots.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker">Residual Risks</p>
+      <h2>What is still unresolved after the upgrade</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Model risks</h3>
+          <p>
+            The expensive end of the market still carries larger absolute-dollar miss. Subgroup variability also suggests that
+            niche segments may benefit from targeted models or interval predictions instead of one shared confidence story.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Evaluation risks</h3>
+          <p>
+            These diagnostics improve interpretability, but they do not solve every external validity issue. Geographic shifts,
+            market timing, and policy changes in used-car supply remain outside the current evaluation design.
           </p>
         </article>
       </div>

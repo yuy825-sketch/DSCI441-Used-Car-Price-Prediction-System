@@ -58,6 +58,11 @@
             Used-car prices are highly right-skewed and segment-dependent. A single RMSE number can hide meaningful error
             differences across price ranges and subgroups. This motivates both nonlinear modeling and richer diagnostics.
           </p>
+          <p>
+            The data also mixes numeric signals such as year and odometer with noisy categorical fields such as condition,
+            fuel, title status, state, and manufacturer. That combination makes both preprocessing and post-hoc interpretation
+            part of the modeling problem instead of an afterthought.
+          </p>
           <div class="btn-row">
             <span class="pill">426,880 raw rows</span>
             <span class="pill">Craigslist dataset</span>
@@ -79,6 +84,29 @@
           <figcaption>Several categorical columns are sparse, requiring robust imputation.</figcaption>
         </figure>
       </div>
+      <div class="deliverable-grid">
+        <article class="deliverable">
+          <h3>What the team had to build</h3>
+          <p>
+            The project required cleaning large raw listings, engineering mixed-type features, training multiple baselines,
+            comparing nonlinear alternatives, exporting visual diagnostics, and packaging a runnable demo.
+          </p>
+        </article>
+        <article class="deliverable">
+          <h3>Why split discipline matters</h3>
+          <p>
+            A careless random split can let duplicated market patterns leak across train and test. The repository keeps the
+            evaluation story anchored in a leakage-aware workflow so metric comparisons stay meaningful.
+          </p>
+        </article>
+        <article class="deliverable">
+          <h3>What the upgrade adds</h3>
+          <p>
+            The extension does not replace the original project. It adds a second interpretability layer showing where the
+            broad-domain model is reliable and where subgroup or price-band caution is needed.
+          </p>
+        </article>
+      </div>
     </section>
 
     <section class="block">
@@ -87,6 +115,11 @@
       <p>
         The repository keeps linear baselines (OLS/Ridge/Lasso), text-augmented Ridge, and boosted trees in one consistent
         pipeline. The nonlinear model leads on broad-domain fit while preserving reproducibility and exportability.
+      </p>
+      <p>
+        This is useful pedagogically because the project does not jump straight to one high-scoring model. It shows the full
+        modeling ladder: interpretable linear baselines, a text-aware regression baseline, and then a nonlinear learner that
+        better captures mixed-feature interactions.
       </p>
       <div class="gallery">
         <figure class="fig">
@@ -129,6 +162,28 @@
           </p>
           <p>
             That makes the project look more like a deployable analytics system and less like a single leaderboard snapshot.
+          </p>
+        </article>
+      </div>
+      <div class="timeline-grid">
+        <article class="timeline-card">
+          <h3>Baseline stage</h3>
+          <p>
+            OLS, Ridge, and Lasso establish the minimum viable regression story and expose how much linear structure the
+            engineered table can explain on its own.
+          </p>
+        </article>
+        <article class="timeline-card">
+          <h3>Feature-extension stage</h3>
+          <p>
+            Ridge + TF-IDF tests whether free-text information from listings adds predictive value beyond the structured fields.
+          </p>
+        </article>
+        <article class="timeline-card">
+          <h3>Nonlinear stage</h3>
+          <p>
+            HistGradientBoosting becomes the best broad-domain model because it handles heterogeneous interactions more naturally
+            than the linear baselines.
           </p>
         </article>
       </div>
@@ -190,6 +245,29 @@
           <figcaption>Best broad-domain run still shows larger variance on the high-price tail.</figcaption>
         </figure>
       </div>
+      <div class="deliverable-grid">
+        <article class="deliverable">
+          <h3>What this static demo can prove</h3>
+          <p>
+            It proves the repository already has a coherent end-to-end path from cleaned inputs to a prediction-facing interface.
+            It also demonstrates how the GitHub Pages version can preserve the same narrative without server-side inference.
+          </p>
+        </article>
+        <article class="deliverable">
+          <h3>What it cannot prove</h3>
+          <p>
+            Because outputs are precomputed, the GitHub Pages site is a communication artifact, not a live benchmark. Real
+            runtime behavior still belongs to the local Streamlit app and trained model export.
+          </p>
+        </article>
+        <article class="deliverable">
+          <h3>Why keep both versions</h3>
+          <p>
+            The static site is ideal for sharing and grading, while the local app remains the faithful runnable demonstration
+            of the original project deliverable.
+          </p>
+        </article>
+      </div>
     </section>
 
     <section class="block">
@@ -226,6 +304,33 @@
         <a class="btn" href="results.html">Open full results deep dive</a>
         <a class="btn" href="../results/REPORT.md">Open REPORT.md</a>
         <a class="btn" href="../results/advanced/README.md">Open advanced README</a>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker">Limits and Use</p>
+      <h2>What this project should and should not be used for</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>What it does well</h3>
+          <p>
+            It offers a strong course-project example of data cleaning, tabular regression, baseline comparison, nonlinear
+            modeling, error analysis, and deployment-minded packaging around a realistic marketplace dataset.
+          </p>
+          <p>
+            The upgraded diagnostics also make the model's failure profile visible enough to support more careful interpretation.
+          </p>
+        </article>
+        <article class="card">
+          <h3>What remains out of scope</h3>
+          <p>
+            This is not a production-grade valuation engine. It does not model macroeconomic shifts, dealer-specific strategy,
+            geographic liquidity, or confidence intervals calibrated for commercial risk decisions.
+          </p>
+          <p>
+            The correct reading is: strong educational system, useful analytical prototype, not a finalized market pricing product.
+          </p>
+        </article>
       </div>
     </section>
 

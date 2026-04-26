@@ -303,6 +303,33 @@
       line-height: 1.28;
     }
 
+    .micro-grid {
+      margin-top: 1.1mm;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1mm;
+    }
+
+    .micro {
+      border: 0.22mm solid var(--line);
+      border-radius: 1.5mm;
+      background: #fff;
+      padding: 1mm;
+    }
+
+    .micro h3 {
+      margin: 0;
+      font-size: 2.35mm;
+      line-height: 1.15;
+      font-family: "Source Serif 4", Georgia, serif;
+    }
+
+    .micro p {
+      margin: 0.7mm 0 0;
+      font-size: 2.08mm;
+      line-height: 1.28;
+    }
+
     .footer {
       margin: 0 2.8mm 2.8mm;
       border: 0.25mm solid var(--line);
@@ -492,6 +519,11 @@
               The best model achieves high broad-domain fit, yet error distribution differs by price decile and subgroup.
               Extension diagnostics expose these deployment-relevant patterns.
             </p>
+            <ul class="tight-bullets">
+              <li>The headline model is strong enough to summarize the broad market, but not uniform enough to justify one confidence message.</li>
+              <li>High-price listings remain the most visible source of larger absolute-dollar miss.</li>
+              <li>The extension therefore shifts the project from score reporting to decision-aware evaluation.</li>
+            </ul>
             <div class="mini-grid">
               <div class="mini">
                 <p><strong>Broad-domain best:</strong> R² 0.8061, RMSE 6649, MAE 3384.</p>
@@ -512,6 +544,16 @@
               <img src="assets/calibration_pred_vs_true_decile_hgb_ordinal.png" alt="Calibration plot by decile" />
               <figcaption>Decile-level predicted vs true means reveal calibration-style drift.</figcaption>
             </figure>
+            <div class="micro-grid">
+              <div class="micro">
+                <h3>What the figures show</h3>
+                <p>The model is useful overall, but it compresses some market regions and loses precision in the expensive tail.</p>
+              </div>
+              <div class="micro">
+                <h3>Why that matters</h3>
+                <p>A user-facing system should report more than one scalar score when uncertainty is segment-dependent.</p>
+              </div>
+            </div>
           </section>
 
           <section class="panel">
@@ -520,6 +562,11 @@
             <p>
               The Streamlit app provides an input -> predict interface. The extension recommends pairing predictions with
               subgroup/decile diagnostics so users can interpret uncertainty by market segment.
+            </p>
+            <p>
+              In other words, the poster is not claiming a fully production-ready valuation engine. It shows that the course
+              project now includes the right packaging layers: reproducible training, comparative evaluation, demo exposure,
+              and a clearer reading of failure modes.
             </p>
             <figure class="fig">
               <img src="assets/streamlit_demo.png" alt="Streamlit demo" />
@@ -537,6 +584,20 @@
               <li>The GitHub Pages companion turns the same message into a static, deployable walkthrough.</li>
               <li>The poster, report, and website now tell the same core story across formats.</li>
             </ul>
+            <div class="rule-grid">
+              <div class="rule">
+                <h3>What was built</h3>
+                <p>Training pipeline, baseline comparison, nonlinear model, diagnostics, report, poster, and static site.</p>
+              </div>
+              <div class="rule">
+                <h3>What was learned</h3>
+                <p>Broad accuracy and deployment confidence are related, but not equivalent.</p>
+              </div>
+              <div class="rule">
+                <h3>What remains open</h3>
+                <p>Intervals, segment-specific models, and stronger geographic robustness are next logical extensions.</p>
+              </div>
+            </div>
           </section>
         </div>
       </section>
