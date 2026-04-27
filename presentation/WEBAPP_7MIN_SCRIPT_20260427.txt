@@ -1,0 +1,71 @@
+[Overview / Hero — From Regression Baselines to Deployment-Facing Diagnostics]
+I start from the top of the website. This page presents the project as more than a model benchmark. It shows a full workflow, from data cleaning and feature engineering to model comparison, diagnostics, and deployment-facing interpretation. The three headline numbers summarize the project in a compact way: the best broad-domain R-squared is 0.8061, the best broad-domain RMSE is 6,649 dollars, and the key upgrade result is that model reliability changes across price bands and subgroups.
+
+[概览 / 首页标题区 — From Regression Baselines to Deployment-Facing Diagnostics]
+我先从网页最上面的部分开始介绍。这个页面把项目展示成一个完整系统，而不只是一个模型分数比较。它覆盖了从数据清理、特征工程，到模型比较、误差诊断，再到面向部署的解释。上面的三个核心指标也把项目压缩成了一个很清楚的摘要：最好的全域 R 方是 0.8061，最好的全域 RMSE 是 6649 美元，而这次升级最重要的结论是，模型的可靠性会随着价格区间和分组而变化。
+
+[Problem / Data — Heavy-tailed target, missingness, and market heterogeneity]
+The first main section explains why this problem is hard. Used-car prices are heavy-tailed, the listings are noisy, and the market is heterogeneous. The website also makes an important point here: this is not only a modeling problem, it is also a data-quality and evaluation problem. The pipeline figure and the data visuals help show that preprocessing and interpretation are part of the actual contribution.
+
+[问题 / 数据 — Heavy-tailed target, missingness, and market heterogeneity]
+第一个主要部分解释了为什么这个问题本身就很难。二手车价格有明显长尾，挂牌数据噪声很多，而且市场内部差异很大。网页在这里还强调了一个重点：这不只是建模问题，同时也是数据质量和评估方式的问题。流程图和数据可视化一起说明了，预处理和结果解释本身就是这个项目的重要贡献。
+
+[Modeling — Comparative modeling and a strong nonlinear baseline]
+The next section explains the modeling story. The project does not jump directly to one strong model. It starts with linear baselines, then adds text-enhanced Ridge, and finally uses a nonlinear boosted-tree model. This order matters because it shows what each modeling choice contributes. The website makes the comparison easy to understand: regularization helps a little, text helps more, and nonlinear modeling closes the largest remaining gap.
+
+[建模部分 — Comparative modeling and a strong nonlinear baseline]
+接下来的部分讲的是建模过程。这个项目并没有一开始就直接使用最强模型，而是先从线性基线开始，再加入带文本特征的 Ridge，最后使用非线性的提升树模型。这样的顺序很重要，因为它能清楚说明每一步到底带来了什么贡献。网页把这个逻辑讲得很直接：正则化有帮助，但提升有限；文本特征更有帮助；而非线性建模弥补了剩下最大的一部分差距。
+
+[GitHub-friendly Demo — How to use this site (precomputed static flow)]
+This section is the web demo entry. Because GitHub Pages cannot run live inference like Streamlit, the site uses precomputed scenarios. The point here is not to claim a live production system on the web. The point is to let viewers experience the same input-to-output logic in a simple and shareable form. The step-by-step layout also makes it easy to explain how a user would read one predicted price together with its range and uncertainty note.
+
+[GitHub 友好 Demo — How to use this site (precomputed static flow)]
+这一部分就是网页里的 Demo 入口。因为 GitHub Pages 不能像 Streamlit 那样做实时推理，所以这里采用的是预先计算好的示例。重点并不是要把它包装成一个网页上的实时系统，而是让观看者能够用一种简单、易分享的方式，体验同样的输入到输出流程。这里的分步骤设计也很适合口头说明：用户不只是看到一个预测价格，还会同时看到范围和不确定性提示。
+
+[Advanced Extension — Subgroup and decile diagnostics added in this upgrade]
+This section explains what changed in the upgraded version of the project. The website is explicit that the new value is not only more visuals. The real value is that the project now has subgroup- and decile-level diagnostics, so the model can be discussed in a more honest way. Instead of saying only that the model is good overall, this section prepares the viewer for a more detailed discussion of where the model is stable and where it becomes fragile.
+
+[高级拓展 — Subgroup and decile diagnostics added in this upgrade]
+这一部分说明了升级版项目到底增加了什么。网页很明确地告诉观众，价值并不只是多了几张图。真正的价值在于，现在项目里加入了按分组和按价格分位的诊断分析，所以可以用更诚实、更细致的方式来讨论模型。它不再只是说“模型整体不错”，而是开始引导观众去看模型在哪些地方稳定、哪些地方会变得脆弱。
+
+[Limits and Use — What this project should and should not be used for]
+Before moving to the deeper results page, the overview site also states the limits clearly. This is important because it keeps the project grounded. The system is a strong educational and analytical prototype, but it is not a finished market-pricing engine. That distinction matters because it shows that good reporting should include both strengths and boundaries.
+
+[适用范围与限制 — What this project should and should not be used for]
+在进入更深入的结果页面之前，首页还专门写清楚了项目的边界。这一点很重要，因为它让整个项目保持诚实和克制。这个系统是一个很强的课程项目原型，也是一个有分析价值的工具，但它并不是一个已经完成的商业化定价引擎。这种区分很重要，因为好的项目汇报不应该只讲优势，也应该讲清楚适用范围和局限。
+
+[Results Page / Hero — From global metrics to segment-aware error behavior]
+If I move to the results page, the framing changes from overview to diagnosis. The title says that clearly: the goal is to go from global metrics to segment-aware error behavior. The summary table is useful because it reminds the audience that the best broad-domain model is still the boosted-tree model, so the upgraded analysis is not changing the winner. What changes is the depth of interpretation.
+
+[结果页标题区 — From global metrics to segment-aware error behavior]
+如果我切换到结果页，讲述重点就会从整体介绍转向诊断分析。标题本身已经说明了这一点：目标是从全局指标进一步走向“分组感知”的误差行为。上面的汇总表也很有用，因为它提醒观众，表现最好的全域模型仍然是提升树模型，所以这次升级并不是改写赢家，而是加深了解释层次。
+
+[Core Model Behavior — Strong fit with visible heavy-tail effects]
+This section explains the baseline truth about the best model. The fit is strong, but the high-price tail remains difficult. That is a very important sentence for this whole project. If the presentation stopped at one global metric, this part would be hidden. The website uses these plots to show that the model captures the broad structure well, while still carrying larger uncertainty in expensive cases.
+
+[核心模型行为 — Strong fit with visible heavy-tail effects]
+这一部分讲的是最佳模型最基本的真实情况。整体拟合确实不错，但高价长尾仍然比较难预测。这句话对于整个项目其实非常关键。如果汇报只停留在一个全局指标上，这一点就会被遮住。网页在这里利用图像把这个事实讲清楚：模型抓住了市场的大结构，但在高价样本上依然带有更大的不确定性。
+
+[Advanced Figure Set + Reading Guide]
+The next two sections are really the heart of the upgraded webapp. First, the figures show how error changes by condition, fuel type, vehicle age, and price decile. Then the reading guide translates each plot into a decision-facing message. This is the strongest part of the site for me, because it does not just show evidence; it also teaches the viewer how to interpret the evidence.
+
+[高级图组 + 阅读指南]
+接下来的两个部分，其实就是升级版网页最核心的地方。首先，图像把误差在车况、燃料类型、车龄和价格分位上的变化展示出来。然后，阅读指南又进一步把每张图翻译成面向决策的解释。对我来说，这是整个网站最强的一部分，因为它不只是摆证据，还教会观众应该怎样读这些证据。
+
+[Interpretation + What Was Actually Done]
+After that, the site gives two very practical summaries. One is deployment-facing conclusions, which explains what should stay the same and what should change in actual usage. The other is the section called “This upgrade adds analysis, not just styling.” I like this part because it makes the work visible: new diagnostics were computed, the report was updated, and the deployment story was extended into a website and poster.
+
+[解释总结 + 实际完成内容]
+再往下，网站给出了两个很实际的总结。一个是面向部署的结论，它说明了哪些核心判断保持不变，哪些使用方式需要随诊断结果而改变。另一个是 “This upgrade adds analysis, not just styling” 这一部分。这里很好的一点是，它把工作量本身说清楚了：新增了诊断分析、更新了报告，也把整个交付进一步延伸到了网页和海报。
+
+[Residual Risks — What is still unresolved after the upgrade]
+The final section closes the webapp in a way that feels responsible. It says clearly that even with better diagnostics, some risks remain unresolved, especially in the expensive end of the market and in external validity. Ending the website this way is important, because it shows that the final message is not blind confidence. The final message is that the model is useful, but it should be interpreted with structure and caution.
+
+[剩余风险 — What is still unresolved after the upgrade]
+最后一个部分用一种比较负责的方式收尾。它明确说明，即使加入了更细的诊断分析，仍然有一些问题没有被彻底解决，特别是高价市场部分以及外部有效性相关的问题。用这样的方式结束网页是很重要的，因为它说明最终想传达的不是盲目自信，而是：这个模型是有用的，但它需要在结构化和谨慎的前提下被理解。
+
+[Closing]
+So if I summarize the webapp in one sentence, I would say this: the website turns the project from a repository of results into a guided explanation of what the model does well, where it becomes weaker, and how those findings should shape deployment reading. That is why this web version matters in the final package.
+
+[结尾]
+如果要我用一句话总结这个 webapp，我会这样说：这个网站把原本偏“结果仓库”的项目，变成了一个有引导性的说明系统，让人能够更清楚地理解模型哪里做得好、哪里会变弱，以及这些结论应该怎样影响最终的使用方式。这也是为什么这个网页版本在最终交付里是有价值的。
